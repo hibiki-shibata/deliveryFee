@@ -80,24 +80,26 @@ fun calculateDeliveryFee(request: DeliveryRequest): Int {
         var deliveryFee:Int = distanceFee + itemSurcharge + bulkFee + smallOrderSurcharge
 
         // Rush Hour?
-        if (isRushHour(deliveryTime)) {deliveryFee *= 12 / 10}
+        if (isRushHour(deliveryTime)) {
+            val deliveryFee: Int = calculateRushHourFee(deliveryFee)
+            return deliveryFee
+        }
+        
+        // cap 15 euro
+        if(deliveryFee >= 1500){deliveryFee = 1500}
+        return deliveryFee
 
-        //over 15 Euro?
-        if(deliveryFee >= 1500){ deliveryFee = 1500}
-
-    return deliveryFee
-
-   }catch (e: Exception) {
-        e.printStackTrace()
-        throw e
-        println("err: main") 
-    }
+        }catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+            println("err: main") 
+        }
 }
 
 
 fun calculateOrderSurcharge(cartValue: Int): Int{
     try{
-        var surcharges: Int
+        val surcharges: Int
         surcharges = if (cartValue < 1000) {
             1000 - cartValue
         } else 0
@@ -135,7 +137,7 @@ fun calculateItemSurcharge(numberOfItems: Int): Int {
         val baseItemSurcharge: Int = 50
         var additionalSurcharge: Int = if (numberOfItems >= 5) {
             val extraItems:Int = numberOfItems - 4
-            extraItems * baseItemSurcharge
+             baseItemSurcharge * extraItems 
         } else 0
 
         //Bulk fee
@@ -156,7 +158,7 @@ fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
     try{
         val isBetween15pmAnd19pm = deliveryTime.hour in 15..19
         val isFriday = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
-
+    
     return isBetween15pmAnd19pm && isFriday
 
     }catch (e: Exception) {
@@ -166,6 +168,12 @@ fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
     }
 }
 
-//add testing
-//check library
 
+fun calculateRushHourFee(originalFee: Int): Int {
+    val updatedFee = originalFee * 12 / 10
+    val deliveryFee = if (updatedFee >= 1500) 1500 else updatedFeed
+    return deliveryFee
+}
+
+// library version
+// detailed testing

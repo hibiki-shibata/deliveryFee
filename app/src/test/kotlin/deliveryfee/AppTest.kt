@@ -7,31 +7,101 @@ import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertEquals
 
+// https://github.com/woltapp/engineering-summer-intern-2023
 
-class AppTest {
-    @Test fun testCalculationz() {
-        val sum = calculateItemSurcharge(4)
 
-        assertEquals(0, sum)
-        assertNotNull(sum)
+class testEachFunctions {
+
+//
+    @Test fun OrderSurcharge() {
+        val zero = calculateOrderSurcharge(0)
+        val one = calculateOrderSurcharge(1)
+        val small = calculateOrderSurcharge(790)
+        val just = calculateOrderSurcharge(1000)
+        val large = calculateOrderSurcharge(1234)
+
+        assertEquals(1000, zero)
+        assertEquals(999, one)
+        assertEquals(210, small)
+        assertEquals(0, just)
+        assertEquals(0, large)
+        
     }
 
-    @Test fun appHasAGreeting1() {
-        val sum2 = calculateItemSurcharge(4)
+    //
+    @Test fun DistanceFee() {
+        val zero = calculateDistanceFee(0)
+        val small = calculateDistanceFee(800)
+        val just = calculateDistanceFee(1000)
+        val large = calculateDistanceFee(1500)
+        val large2 = calculateDistanceFee(1700) 
 
-        assertEquals(0, sum2)
-        assertNotNull(sum2)
+        assertEquals(200, zero)
+        assertEquals(200, small)
+        assertEquals(200, just)
+        assertEquals(300, large)
+        assertEquals(400, large2)
     }
+
+    //
+    @Test fun ItemSurcharge() {
+        val zero = calculateItemSurcharge(0)
+        val small = calculateItemSurcharge(1)
+        val just = calculateItemSurcharge(5)
+        val large = calculateItemSurcharge(7)
+        val twelve = calculateItemSurcharge(12)
+        val superLarge = calculateItemSurcharge(17)
+
+        assertEquals(0, zero)
+        assertEquals(0, small)
+        assertEquals(50, just)
+        assertEquals(150, large)
+        assertEquals(400, twelve)
+        assertEquals(770, superLarge)
+      
+    }
+
+
+    //Final calc
+    @Test fun finalCalculation() {
+        // 
+        val request = DeliveryRequest (
+            cart_value = 790,
+            delivery_distance = 2235,
+            number_of_items = 4,
+            time = "2021-10-12T13:00:00Z"
+        )
+
+        val deliveryFee = calculateDeliveryFee(request)
+
+        assertEquals(710, deliveryFee)
+
+        // 
+        val request2 = DeliveryRequest (
+            cart_value = 0,
+            delivery_distance = 0,
+            number_of_items = 0,
+            time = "2021-10-12T13:00:00Z"
+        )
+        val zero = calculateDeliveryFee(request2)
+        assertEquals(1200, zero)
+
+
+         // Rush
+         val request3 = DeliveryRequest (
+            cart_value = 0,
+            delivery_distance = 0,
+            number_of_items = 0,
+            time = "2023-11-10T17:00:00Z"
+        )
+        val RushHour = calculateDeliveryFee(request3)
+        // assertEquals(1200, RushHour)
+        println(RushHour)
+ 
+    }
+  
 
 
 }
 
 
-class AppTest1 {
-    @Test fun appHasAGreeting() {
-        val sum = calculateItemSurcharge(4)
-
-        assertEquals(0, sum)
-        assertNotNull(sum)
-    }
-}

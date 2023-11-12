@@ -13,8 +13,6 @@ plugins {
     kotlin("plugin.serialization") version "1.9.20"
     
 
-
-
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
