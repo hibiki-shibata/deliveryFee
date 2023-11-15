@@ -8,20 +8,17 @@
  plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     // id("org.jetbrains.kotlin.jvm") version "1.9.10"
-    // kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.20"
 
     kotlin("plugin.serialization") version "1.9.20"
 
-    id("org.jetbrains.kotlin.jvm") version "1.5.31"
-    // id("io.spring.gradle.plugin") version "1.0.11"
+    // id("com.github.johnrengelman.shadow") version "7.1.2"
 
-    
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
-group = "com.example"
-version = "1.0"
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -64,19 +61,17 @@ application {
 
 }
 
+
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
 
-tasks.withType<Jar> {
-    manifest {
-        attributes("Main-Class" to "deliveryfee.AppKt")
-        fatJar {
-            archiveFileName.set("hibiki.jar") // Replace 'my-app-ktor.jar' with the desired filename for the JAR file
-        }
-    }
-}
+// tasks.withType<Jar> {
+//     manifest {
+//         attributes("Main-Class" to "deliveryfee.AppKt")
+//     }
+// }
 
 // ktor {
 //     fatJar {
@@ -84,3 +79,29 @@ tasks.withType<Jar> {
 //     }
 // }
 
+tasks {
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "19"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "19"
+        }
+    }
+
+
+    jar {
+        manifest {
+            attributes["Main-Class"] = "deliveryfee.AppKt"
+        }
+        from(sourceSets.main.get().output)
+        dependsOn(configurations.runtimeClasspath)
+        from({
+            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+        })
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE // or DuplicatesStrategy.FAIL
+    }
+    
+}
