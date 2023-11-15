@@ -5,17 +5,23 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.4/userguide/building_java_projects.html in the Gradle documentation.
  */
 
-plugins {
+ plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     // id("org.jetbrains.kotlin.jvm") version "1.9.10"
-    kotlin("jvm") version "1.9.20"
+    // kotlin("jvm") version "1.9.20"
 
     kotlin("plugin.serialization") version "1.9.20"
+
+    id("org.jetbrains.kotlin.jvm") version "1.5.31"
+    // id("io.spring.gradle.plugin") version "1.0.11"
+
     
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
+group = "com.example"
+version = "1.0"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -55,9 +61,26 @@ java {
 application {
     // Define the main class for the application.
     mainClass.set("deliveryfee.AppKt")
+
 }
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+tasks.withType<Jar> {
+    manifest {
+        attributes("Main-Class" to "deliveryfee.AppKt")
+        fatJar {
+            archiveFileName.set("hibiki.jar") // Replace 'my-app-ktor.jar' with the desired filename for the JAR file
+        }
+    }
+}
+
+// ktor {
+//     fatJar {
+//         archiveFileName.set("fat.jar")
+//     }
+// }
+

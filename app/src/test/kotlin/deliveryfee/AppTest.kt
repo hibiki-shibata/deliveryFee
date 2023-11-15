@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 class testEachFunctions {
 
 //
-    @Test fun OrderSurcharge() {
+    @Test fun `calculateOrderSurcharge shoud be the difference between the cart value and 10€`() {
         val zero = calculateOrderSurcharge(0)
         val one = calculateOrderSurcharge(1)
         val small = calculateOrderSurcharge(790)
@@ -41,6 +41,7 @@ class testEachFunctions {
         assertEquals(200, just)
         assertEquals(300, large)
         assertEquals(400, large2)
+        println(large2)
     }
 
     //

@@ -19,6 +19,8 @@ import java.time.ZoneOffset
 import io.ktor.http.HttpStatusCode
 import java.time.DayOfWeek
 import java.time.OffsetDateTime
+// import kotlin.math.ceil
+
 
 
 @Serializable
@@ -50,12 +52,12 @@ fun main() {
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.InternalServerError, "Internal Server Error\nDetails: ${e}")
                     e.printStackTrace()
-                    println("something went wrong!")
+                    // println("something went wrong!")
                 }
             }
         }
     }.start(wait = true)
-    println("App is running!<3")
+    // println("App is running!<3")
 }
 
 
@@ -81,8 +83,8 @@ fun calculateDeliveryFee(request: DeliveryRequest): Int {
 
         // Rush Hour?
         if (isRushHour(deliveryTime)) {
-            val deliveryFee: Int = calculateRushHourFee(deliveryFee)
-            return deliveryFee
+            val RushdeliveryFee: Int = calculateRushHourFee(deliveryFee)
+            return RushdeliveryFee
         }
         
         // cap 15 euro
@@ -92,7 +94,7 @@ fun calculateDeliveryFee(request: DeliveryRequest): Int {
         }catch (e: Exception) {
             e.printStackTrace()
             throw e
-            println("err: main") 
+            // println("err: main") 
         }
 }
 
@@ -109,7 +111,7 @@ fun calculateOrderSurcharge(cartValue: Int): Int{
     }catch (e: Exception) {
         e.printStackTrace()
         throw e
-        println("err: calculateOrderSurcharge") 
+        // println("err: calculateOrderSurcharge") 
     }
 }
 
@@ -119,7 +121,8 @@ fun calculateDistanceFee(distance: Int): Int {
         val baseDistanceFee = 200
         val additionalDistance: Int = distance - 1000
         val additionalDistanceFee: Int = if (additionalDistance > 0) {
-            100 * (additionalDistance / 500) + if (additionalDistance % 500 != 0) 100 else 0
+            // (ceil(additionalDistance / 500.0) * 100).toInt() + if (additionalDistance % 500 != 0) 100 else 0
+             (additionalDistance / 500) * 100 + if (additionalDistance % 500 != 0) 100 else 0
         } else 0
 
     return baseDistanceFee + additionalDistanceFee
@@ -127,11 +130,12 @@ fun calculateDistanceFee(distance: Int): Int {
     }catch (e: Exception) {
         e.printStackTrace()
         throw e
-        println("err: calculateDistanceFee")
+        // println("err: calculateDistanceFee")
     }
 }
 
-
+// If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item. 
+// An extra "bulk" fee applies for more than 12 items of 1,20€
 fun calculateItemSurcharge(numberOfItems: Int): Int {
     try{
         val baseItemSurcharge: Int = 50
@@ -149,7 +153,7 @@ fun calculateItemSurcharge(numberOfItems: Int): Int {
     }catch (e: Exception) {
         e.printStackTrace()
         throw e
-        println("err: calculateItemSurcharge") 
+        // println("err: calculateItemSurcharge") 
     }
 }
 
@@ -164,14 +168,14 @@ fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
     }catch (e: Exception) {
         e.printStackTrace()
         throw e
-        println("err: isRushHour") 
+        // println("err: isRushHour") 
     }
 }
 
 
 fun calculateRushHourFee(originalFee: Int): Int {
     val updatedFee = originalFee * 12 / 10
-    val deliveryFee = if (updatedFee >= 1500) 1500 else updatedFeed
+    val deliveryFee = if (updatedFee >= 1500) 1500 else updatedFee
     return deliveryFee
 }
 
