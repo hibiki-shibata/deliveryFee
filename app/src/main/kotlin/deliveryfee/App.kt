@@ -19,7 +19,7 @@ import java.time.ZoneOffset
 import io.ktor.http.HttpStatusCode
 import java.time.DayOfWeek
 import java.time.OffsetDateTime
-// import kotlin.math.ceil
+import kotlin.math.ceil
 
 
 
@@ -121,8 +121,8 @@ fun calculateDistanceFee(distance: Int): Int {
         val baseDistanceFee = 200
         val additionalDistance: Int = distance - 1000
         val additionalDistanceFee: Int = if (additionalDistance > 0) {
-            // (ceil(additionalDistance / 500.0) * 100).toInt() + if (additionalDistance % 500 != 0) 100 else 0
-             (additionalDistance / 500) * 100 + if (additionalDistance % 500 != 0) 100 else 0
+            (ceil(additionalDistance / 500.0) * 100).toInt() 
+            //ceiling logic manual =>  + if (additionalDistance % 500 != 0) 100 else 0
         } else 0
 
     return baseDistanceFee + additionalDistanceFee

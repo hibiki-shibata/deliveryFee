@@ -33,13 +33,13 @@ class testEachFunctions {
         val zero = calculateDistanceFee(0)
         val small = calculateDistanceFee(800)
         val just = calculateDistanceFee(1000)
-        val large = calculateDistanceFee(1500)
+        val large = calculateDistanceFee(2050)
         val large2 = calculateDistanceFee(1700) 
 
         assertEquals(200, zero)
         assertEquals(200, small)
         assertEquals(200, just)
-        assertEquals(300, large)
+        assertEquals(500, large)
         assertEquals(400, large2)
         println(large2)
     }

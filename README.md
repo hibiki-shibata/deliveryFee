@@ -1,4 +1,7 @@
 # deliveryFee
+# main codes are inside of /app/src/main/kotlin/deliveryfee/App.kt
+
+
 
 FROM openjdk:11
 
