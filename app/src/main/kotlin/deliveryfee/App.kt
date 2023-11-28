@@ -47,7 +47,12 @@ fun main() {
             post("/delivery-fee") {
                 try {
                     val request = call.receive<DeliveryRequest>()
-                    val deliveryFee:Int = calculateDeliveryFee(request)
+
+                    if(!isValidRequest(request)){
+                        call.respond(HttpStatusCode.BadRequest, "Invalid request")
+                    }
+
+                    val deliveryFee: Int = calculateDeliveryFee(request)
                     call.respond(DeliveryResponse(deliveryFee))
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.InternalServerError, "Internal Server Error\nDetails: ${e}")
@@ -57,10 +62,28 @@ fun main() {
             }
         }
     }.start(wait = true)
-    // println("App is running!<3")
 }
 
 
+// request validation
+fun isValidRequest(request: DeliveryRequest): Boolean {
+    return request.cart_value >= 0 &&
+            request.delivery_distance >= 0 &&
+            request.number_of_items >= 0 &&
+            isValidTime(request.time)
+}
+
+fun isValidTime(time: String): Boolean {
+    return try {
+        OffsetDateTime.parse(time)
+        true
+    } catch (e: Exception) {
+        false
+    }
+}
+
+
+// calculation
 fun calculateDeliveryFee(request: DeliveryRequest): Int {
     try{
         val cartValue = request.cart_value
@@ -93,10 +116,10 @@ fun calculateDeliveryFee(request: DeliveryRequest): Int {
 
         }catch (e: Exception) {
             e.printStackTrace()
-            throw e
-            // println("err: main") 
+            throw e 
         }
 }
+
 
 
 fun calculateOrderSurcharge(cartValue: Int): Int{
@@ -130,7 +153,6 @@ fun calculateDistanceFee(distance: Int): Int {
     }catch (e: Exception) {
         e.printStackTrace()
         throw e
-        // println("err: calculateDistanceFee")
     }
 }
 
@@ -153,7 +175,6 @@ fun calculateItemSurcharge(numberOfItems: Int): Int {
     }catch (e: Exception) {
         e.printStackTrace()
         throw e
-        // println("err: calculateItemSurcharge") 
     }
 }
 
@@ -168,7 +189,6 @@ fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
     }catch (e: Exception) {
         e.printStackTrace()
         throw e
-        // println("err: isRushHour") 
     }
 }
 
