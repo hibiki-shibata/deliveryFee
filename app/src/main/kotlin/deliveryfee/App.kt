@@ -46,14 +46,14 @@ fun main() {
         routing {
             post("/delivery-fee") {
                 try {
+    
                     val request = call.receive<DeliveryRequest>()
-
                     if(!isValidRequest(request)){
                         call.respond(HttpStatusCode.BadRequest, "Invalid request")
                     }
-
                     val deliveryFee: Int = calculateDeliveryFee(request)
                     call.respond(DeliveryResponse(deliveryFee))
+
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.InternalServerError, "Internal Server Error\nDetails: ${e}")
                     e.printStackTrace()
@@ -83,9 +83,10 @@ fun isValidTime(time: String): Boolean {
 }
 
 
+
 // calculation
 fun calculateDeliveryFee(request: DeliveryRequest): Int {
-    try{
+    
         val cartValue = request.cart_value
         val deliveryDistance = request.delivery_distance
         val numberOfItems = request.number_of_items
@@ -114,33 +115,22 @@ fun calculateDeliveryFee(request: DeliveryRequest): Int {
         if(deliveryFee >= 1500){deliveryFee = 1500}
         return deliveryFee
 
-        }catch (e: Exception) {
-            e.printStackTrace()
-            throw e 
-        }
+       
 }
 
 
 
 fun calculateOrderSurcharge(cartValue: Int): Int{
-    try{
         val surcharges: Int
         surcharges = if (cartValue < 1000) {
             1000 - cartValue
         } else 0
 
     return surcharges
-
-    }catch (e: Exception) {
-        e.printStackTrace()
-        throw e
-        // println("err: calculateOrderSurcharge") 
-    }
 }
 
 
 fun calculateDistanceFee(distance: Int): Int {
-    try{
         val baseDistanceFee = 200
         val additionalDistance: Int = distance - 1000
         val additionalDistanceFee: Int = if (additionalDistance > 0) {
@@ -150,16 +140,12 @@ fun calculateDistanceFee(distance: Int): Int {
 
     return baseDistanceFee + additionalDistanceFee
 
-    }catch (e: Exception) {
-        e.printStackTrace()
-        throw e
-    }
+
 }
 
 // If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item. 
 // An extra "bulk" fee applies for more than 12 items of 1,20€
 fun calculateItemSurcharge(numberOfItems: Int): Int {
-    try{
         val baseItemSurcharge: Int = 50
         var additionalSurcharge: Int = if (numberOfItems >= 5) {
             val extraItems:Int = numberOfItems - 4
@@ -171,25 +157,15 @@ fun calculateItemSurcharge(numberOfItems: Int): Int {
 
 
     return additionalSurcharge
-
-    }catch (e: Exception) {
-        e.printStackTrace()
-        throw e
-    }
 }
 
 
 fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
-    try{
         val isBetween15pmAnd19pm = deliveryTime.hour in 15..19
         val isFriday = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
     
     return isBetween15pmAnd19pm && isFriday
 
-    }catch (e: Exception) {
-        e.printStackTrace()
-        throw e
-    }
 }
 
 
