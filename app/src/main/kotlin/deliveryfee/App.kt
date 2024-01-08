@@ -22,7 +22,6 @@ import java.time.OffsetDateTime
 import kotlin.math.ceil
 
 
-
 @Serializable
 data class DeliveryRequest(
     val cart_value: Int, // cent
@@ -30,6 +29,7 @@ data class DeliveryRequest(
     val number_of_items: Int,
     val time: String // UTC
 )
+
 
 @Serializable
 data class DeliveryResponse(
@@ -46,7 +46,6 @@ fun main() {
         routing {
             post("/delivery-fee") {
                 try {
-    
                     val request = call.receive<DeliveryRequest>()
                     if(!isValidRequest(request)){
                         call.respond(HttpStatusCode.BadRequest, "Invalid request")
@@ -73,6 +72,7 @@ fun isValidRequest(request: DeliveryRequest): Boolean {
             isValidTime(request.time)
 }
 
+
 fun isValidTime(time: String): Boolean {
     return try {
         OffsetDateTime.parse(time)
@@ -81,7 +81,6 @@ fun isValidTime(time: String): Boolean {
         false
     }
 }
-
 
 
 // calculation
@@ -119,7 +118,6 @@ fun calculateDeliveryFee(request: DeliveryRequest): Int {
 }
 
 
-
 fun calculateOrderSurcharge(cartValue: Int): Int{
         val surcharges: Int
         surcharges = if (cartValue < 1000) {
@@ -139,8 +137,6 @@ fun calculateDistanceFee(distance: Int): Int {
         } else 0
 
     return baseDistanceFee + additionalDistanceFee
-
-
 }
 
 // If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item. 
