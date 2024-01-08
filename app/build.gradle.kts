@@ -37,7 +37,7 @@ java {
 }
 
 application {
-    mainClass.set("deliveryfee.AppKt")
+    mainClass = "deliveryfee.AppKt"
 
 } //this line is telling compiler which file is the entry point in the sauce code
 
