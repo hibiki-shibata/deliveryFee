@@ -47,7 +47,7 @@ fun main() {
             post("/delivery-fee") {
                 try {
                     val request = call.receive<DeliveryRequest>()
-                    if(!isValidRequest(request)){
+                    if(!jsonVerificatoin(request)){
                         call.respond(HttpStatusCode.BadRequest, "Invalid request")
                     }
                     val deliveryFee: Int = calculateDeliveryFee(request)
@@ -65,7 +65,7 @@ fun main() {
 
 
 // request validation
-fun isValidRequest(request: DeliveryRequest): Boolean {
+fun jsonVerificatoin(request: DeliveryRequest): Boolean {
     return request.cart_value >= 0 &&
             request.delivery_distance >= 0 &&
             request.number_of_items >= 0 &&
