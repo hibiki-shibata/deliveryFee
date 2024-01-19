@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feecalcdeploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: calculation
+  template:
+    metadata:
+      labels:
+        app: calculation
+    spec:
+      containers:
+        - name: feecalculation
+          image: deecalc
+          imagePullPolicy: Never

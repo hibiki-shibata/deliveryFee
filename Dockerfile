@@ -2,8 +2,8 @@ FROM openjdk:19
 
 WORKDIR /app
 
-COPY app/build/libs/app.jar .
+COPY app/build/libs/app.jar /app
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

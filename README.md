@@ -1,5 +1,6 @@
 # deliveryFee
-# main codes are inside of /app/src/main/kotlin/deliveryfee/App.kt
+# Ently point is /app/src/main/kotlin/deliveryfee/App.kt
+# Calculation process is in the "calfee.kt"
 
 specification:
 https://github.com/woltapp/engineering-internship-2024
