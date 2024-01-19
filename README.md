@@ -8,7 +8,7 @@ FROM openjdk:11
 
 WORKDIR /app
 
-COPY build/libs/app.jar .
+COPY ./app/build/libs/app.jar .
 
 EXPOSE 8080
 

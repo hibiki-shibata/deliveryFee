@@ -37,7 +37,7 @@ java {
 }
 
 application {
-    mainClass = "deliveryfee.AppKt"
+    mainClass = "feeee.AppKt"
 
 } //this line is telling compiler which file is the entry point in the sauce code
 
@@ -49,7 +49,7 @@ tasks.named<Test>("test") {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "deliveryfee.AppKt"
+        attributes["Main-Class"] = "feeee.AppKt"
     } // this line is telling compiler about which treat as main file inside the Jar file, the main can be external file
 
         
