@@ -27,6 +27,8 @@ dependencies {
     implementation("io.ktor:ktor-server-core:1.6.3")
     implementation("io.ktor:ktor-serialization:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    implementation("io.ktor:ktor-network-tls-certificates:1.6.3")
     
 }
 

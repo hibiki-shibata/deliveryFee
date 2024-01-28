@@ -1,17 +1,18 @@
-package feeee
+package CalculateTotalDeliveryFee
 
 import kotlinx.serialization.json.Json
 import java.time.ZoneOffset
 import java.time.DayOfWeek
 import java.time.OffsetDateTime
 import kotlin.math.ceil
+import indexfile.FeeCalcRequest
 
 class Deliveryfee{
 
 
     // calculation
-    fun calculateDeliveryFee(request: DeliveryRequest): Int {
-        
+    fun SumDeliveryFee(request: FeeCalcRequest): Int {
+
             val cartValue = request.cart_value
             val deliveryDistance = request.delivery_distance
             val numberOfItems = request.number_of_items
@@ -81,6 +82,7 @@ class Deliveryfee{
         return additionalSurcharge
     }
 
+    
 
     fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
             val isBetween15pmAnd19pm = deliveryTime.hour in 15..19

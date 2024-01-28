@@ -2,7 +2,7 @@ FROM openjdk:19
 
 WORKDIR /app
 
-COPY app/build/libs/app.jar /app
+COPY app/build/libs/app.jar /app/
 
 EXPOSE 8080
 
