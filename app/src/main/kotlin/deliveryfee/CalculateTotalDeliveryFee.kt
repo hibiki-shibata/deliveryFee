@@ -32,8 +32,9 @@ class Deliveryfee{
             var deliveryFee:Int = distanceFee + itemSurcharge + bulkFee + smallOrderSurcharge
 
             // Rush Hour?
-            if (isRushHour(deliveryTime)) {
-                val RushdeliveryFee: Int = calculateRushHourFee(deliveryFee)
+            val RushHour = RushHour()
+            if (RushHour.isRushHour(deliveryTime)) {
+                val RushdeliveryFee: Int = RushHour.calculateRushHourFee(deliveryFee)
                 return RushdeliveryFee
             }
             
@@ -84,20 +85,43 @@ class Deliveryfee{
 
     
 
-    fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
-            val isBetween15pmAnd19pm = deliveryTime.hour in 15..19
-            val isFriday = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
-        
-        return isBetween15pmAnd19pm && isFriday
+    class RushHour {
 
-    }
+        companion object{
+            // Friday
+            val RUSH_HOUR_FRIDAY_START: Int = 15
+            val RUSH_HOUR_FRIDAY_END: Int = 19
+            val RUSH_HOUR_FRIDAY_DAYS = setOf(DayOfWeek.FRIDAY)
+
+            val RUSH_HOUR_WEDNESDAY_START = 11
+            val RUSH_HOUR_WEDNESDAY_END = 14
+            val RUSH_HOUR_WEDNESDAY_DAYS = setOf(DayOfWeek.WEDNESDAY)
+            
+        }
 
 
-    fun calculateRushHourFee(originalFee: Int): Int {
-        val updatedFee = originalFee * 12 / 10
-        val deliveryFee = if (updatedFee >= 1500) 1500 else updatedFee
-        return deliveryFee
-    }
+        fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
+            val isFridayRushHour = isDayOfWeekRushHour(deliveryTime, RUSH_HOUR_FRIDAY_START, RUSH_HOUR_FRIDAY_END, RUSH_HOUR_FRIDAY_DAYS)
+            val isWednesdayRushHour = isDayOfWeekRushHour(deliveryTime, RUSH_HOUR_WEDNESDAY_START, RUSH_HOUR_WEDNESDAY_END, RUSH_HOUR_WEDNESDAY_DAYS)
+            return isFridayRushHour || isWednesdayRushHour
+        }
+
+        private fun isDayOfWeekRushHour(deliveryTime: OffsetDateTime, startTime: Int, endTime: Int, rushHourDays: Set<DayOfWeek>): Boolean {
+            val isBetweenRushHours = deliveryTime.hour in startTime..endTime
+            val isRushHourDay = deliveryTime.dayOfWeek in rushHourDays
+            return isBetweenRushHours && isRushHourDay
+        }
+
+
+        fun calculateRushHourFee(originalFee: Int): Int {
+                val updatedFee = originalFee * 12 / 10
+                val RushHourFee = if (updatedFee >= 1500) 1500 else updatedFee
+
+            return RushHourFee
+        }
+
+
+ }
 
 
 
