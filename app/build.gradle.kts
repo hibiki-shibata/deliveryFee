@@ -1,6 +1,8 @@
  plugins {
 
-    kotlin("jvm") version "1.9.20"
+    `java-library`
+    // kotlin("jvm") version "1.9.20"
+    // kotlin("jvm") version "2.0.0-Beta3"
 
     kotlin("plugin.serialization") version "1.9.20"
 
@@ -34,7 +36,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(19))
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
