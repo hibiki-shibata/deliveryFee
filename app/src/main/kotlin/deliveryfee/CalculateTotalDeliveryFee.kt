@@ -119,7 +119,7 @@ class Deliveryfee{
 
             return RushHourFee
         }
-
+// would be good to consider in case the weight of the rushhourfee is different depends on the day of week
 
  }
 
