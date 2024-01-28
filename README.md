@@ -1,5 +1,5 @@
 # deliveryFee
-# Ently point is /app/src/main/kotlin/deliveryfee/App.kt
+# Entry point is /app/src/main/kotlin/deliveryfee/App.kt
 # Calculation process is in the "calfee.kt"
 
 specification:
