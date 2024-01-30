@@ -49,7 +49,7 @@ fun main() {
                 try {
                     val request = call.receive<FeeCalcRequest>()
                     if(!jsonVerificatoin(request)){
-                        call.respond(HttpStatusCode.BadRequest, "Invalid request")
+                        call.respond(HttpStatusCode.BadRequest, "Invalid Json request")
                     }
                     val feecalculation = Deliveryfee();
                     val FinalFee = feecalculation.SumDeliveryFee(request);

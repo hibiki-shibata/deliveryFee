@@ -2,7 +2,7 @@
 
     `java-library`
     // kotlin("jvm") version "1.9.20"
-    // kotlin("jvm") version "2.0.0-Beta3"
+    kotlin("jvm") version "2.0.0-Beta3"
 
     kotlin("plugin.serialization") version "1.9.20"
 
@@ -34,14 +34,14 @@ dependencies {
     
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+// java {
+//     toolchain {
+//         languageVersion = JavaLanguageVersion.of(21)
+//     }
+// }
 
 application {
-    mainClass = "feeee.AppKt"
+    mainClass = "indexfile.AppKt"
 
 } //this line is telling compiler which file is the entry point in the sauce code
 

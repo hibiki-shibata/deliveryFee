@@ -18,7 +18,7 @@ class Deliveryfee{
             val numberOfItems = request.number_of_items
             val deliveryTime = OffsetDateTime.parse(request.time)
 
-            //100€ Free delivery?
+            //100€ Free delivery
             if (cartValue >= 10000) {
                 val deliveryFee:Int = 0
             return  deliveryFee
@@ -31,13 +31,13 @@ class Deliveryfee{
 
             var deliveryFee:Int = distanceFee + itemSurcharge + bulkFee + smallOrderSurcharge
 
-            // Rush Hour?
+            // Rush Hour check
             if (isRushHour(deliveryTime)) {
                 val RushdeliveryFee: Int = calculateRushHourFee(deliveryFee)
                 return RushdeliveryFee
             }
             
-            // cap 15 euro
+            // Max 15 euro
             if(deliveryFee >= 1500){deliveryFee = 1500}
             return deliveryFee
 
@@ -56,13 +56,13 @@ class Deliveryfee{
 
 
     fun calculateDistanceFee(distance: Int): Int {
-            val baseDistanceFee = 200
-            val additionalDistance: Int = distance - 1000
+            val baseDistanceFee = 100
+            val additionalDistance: Int = distance - 499
             val additionalDistanceFee: Int = if (additionalDistance > 0) {
                 (ceil(additionalDistance / 500.0) * 100).toInt() 
                 //ceiling logic manual =>  + if (additionalDistance % 500 != 0) 100 else 0
             } else 0
-
+println(baseDistanceFee + additionalDistanceFee)
         return baseDistanceFee + additionalDistanceFee
     }
 

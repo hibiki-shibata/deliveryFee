@@ -7,6 +7,7 @@ import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertEquals
 import indexfile.FeeCalcRequest
+import java.time.OffsetDateTime
 
 
 // https://github.com/woltapp/engineering-summer-intern-2023
@@ -14,15 +15,16 @@ import indexfile.FeeCalcRequest
 
 class testEachFunctions {
 
-val instCalc = Deliveryfee()
+val Deliveryfee = Deliveryfee()
 
-    @Test fun `calculateOrderSurcharge shoud be the difference between the cart value and 10€`() {
-        val zero = instCalc.calculateOrderSurcharge(0)
-        val one = instCalc.calculateOrderSurcharge(1)
-        val small = instCalc.calculateOrderSurcharge(790)
-        val just = instCalc.calculateOrderSurcharge(1000)
-        val large = instCalc.calculateOrderSurcharge(1234)
+    @Test fun `calculateOrderSurcharge has to be 10€ - cartValue`() {
 
+        val zero = Deliveryfee.calculateOrderSurcharge(0)
+        val one = Deliveryfee.calculateOrderSurcharge(1)
+        val small = Deliveryfee.calculateOrderSurcharge(790)
+        val just = Deliveryfee.calculateOrderSurcharge(1000)
+        val large = Deliveryfee.calculateOrderSurcharge(1234)
+ 
         assertEquals(1000, zero)
         assertEquals(999, one)
         assertEquals(210, small)
@@ -31,30 +33,30 @@ val instCalc = Deliveryfee()
         
     }
 
-    //
-    @Test fun DistanceFee() {
-        val zero = instCalc.calculateDistanceFee(0)
-        val small = instCalc.calculateDistanceFee(800)
-        val just = instCalc.calculateDistanceFee(1000)
-        val large = instCalc.calculateDistanceFee(2050)
-        val large2 = instCalc.calculateDistanceFee(1700) 
+    
+    @Test fun `Distancefee always has to be above 1 euro and additional fee is charged 1 euro for next every 500m`() {
+        val zero = Deliveryfee.calculateDistanceFee(0)
+        val middle = Deliveryfee.calculateDistanceFee(800)
+        val just = Deliveryfee.calculateDistanceFee(1000)
+        val large = Deliveryfee.calculateDistanceFee(2050)
+        val large2 = Deliveryfee.calculateDistanceFee(1700) 
 
-        assertEquals(200, zero)
-        assertEquals(200, small)
-        assertEquals(200, just)
+        assertEquals(100, zero)
+        assertEquals(200, middle)
+        assertEquals(300, just)
         assertEquals(500, large)
         assertEquals(400, large2)
         println(large2)
     }
 
-    //
-    @Test fun ItemSurcharge() {
-        val zero = instCalc.calculateItemSurcharge(0)
-        val small = instCalc.calculateItemSurcharge(1)
-        val just = instCalc.calculateItemSurcharge(5)
-        val large = instCalc.calculateItemSurcharge(7)
-        val twelve = instCalc.calculateItemSurcharge(12)
-        val superLarge = instCalc.calculateItemSurcharge(17)
+    
+    @Test fun `For case the number of items more than 5, 50 cent is added for each items above and including the fifth item and Bulk fee for more than 12 items of 1€ + 20 cent `() {
+        val zero = Deliveryfee.calculateItemSurcharge(0)
+        val small = Deliveryfee.calculateItemSurcharge(1)
+        val just = Deliveryfee.calculateItemSurcharge(5)
+        val large = Deliveryfee.calculateItemSurcharge(7)
+        val twelve = Deliveryfee.calculateItemSurcharge(12)
+        val superLarge = Deliveryfee.calculateItemSurcharge(17)
 
         assertEquals(0, zero)
         assertEquals(0, small)
@@ -66,39 +68,66 @@ val instCalc = Deliveryfee()
     }
 
 
-    //Final calc
+    @Test fun `Friday 3pm - 7pm has to be considered as RushHour`(){
+        val FridayOutOfRush = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T13:00:00Z"))
+        val FridayRushhourEdge1 = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T15:00:00Z"))
+        val FridayRushhourMiddle = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T17:00:00Z"))
+        val FridayRushhourEdge2 = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T19:00:00Z"))
+        val NotFriday = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-03T17:00:00Z"))
+
+        assertEquals(false, FridayOutOfRush)
+        assertEquals(true, FridayRushhourEdge1)
+        assertEquals(true, FridayRushhourMiddle)
+        assertEquals(true, FridayRushhourEdge2)
+        assertEquals(false, NotFriday)
+
+    }
+
+@Test fun `During the RushHours total surcharge will be multiplied by 12　devided by 10x - However, the fee still cannot be more than the max 15€`(){
+     val generalCase = Deliveryfee.calculateRushHourFee(1000)
+     val just = Deliveryfee.calculateRushHourFee(1500)
+     val larger = Deliveryfee.calculateRushHourFee(2000)
+
+     assertEquals(1200, generalCase)
+     assertEquals(1500, just)
+     assertEquals(1500, larger)
+
+}
+
+
+    //Final calculation
     @Test fun finalCalculation() {
-        // 
-        val request = FeeCalcRequest (
+        // general
+        val requestGeneral = FeeCalcRequest (
             cart_value = 790,
             delivery_distance = 2235,
             number_of_items = 4,
             time = "2021-10-12T13:00:00Z"
         )
 
-        val deliveryFee = instCalc.SumDeliveryFee(request)
+        val deliveryFee = Deliveryfee.SumDeliveryFee(requestGeneral)
 
         assertEquals(710, deliveryFee)
 
-        // 
-        val request2 = FeeCalcRequest (
+        //all zero
+        val requestZero = FeeCalcRequest (
             cart_value = 0,
             delivery_distance = 0,
             number_of_items = 0,
             time = "2021-10-12T13:00:00Z"
         )
-        val zero = instCalc.SumDeliveryFee(request2)
-        assertEquals(1200, zero)
+        val zero = Deliveryfee.SumDeliveryFee(requestZero)
+        assertEquals(1100, zero)
 
 
-         // Rush
+         // RushHour
          val request3 = FeeCalcRequest (
             cart_value = 0,
             delivery_distance = 0,
             number_of_items = 0,
             time = "2023-11-10T17:00:00Z"
         )
-        val RushHour = instCalc.SumDeliveryFee(request3)
+        val RushHour = Deliveryfee.SumDeliveryFee(request3)
         // assertEquals(1200, RushHour)
         // println(RushHour)
  
@@ -109,3 +138,9 @@ val instCalc = Deliveryfee()
 }
 
 
+//Exeption testing(minus value, fractional number, other format request)
+// unit tests + api tests separately so you can be sure everything is tested.
+// gradle config file formatting
+
+//comment out deleting
+//re-check the edge cases
