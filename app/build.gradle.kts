@@ -34,11 +34,11 @@ dependencies {
     
 }
 
-// java {
-//     toolchain {
-//         languageVersion = JavaLanguageVersion.of(21)
-//     }
-// }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 application {
     mainClass = "indexfile.AppKt"
@@ -55,8 +55,7 @@ tasks.jar {
     manifest {
         attributes["Main-Class"] = "feeee.AppKt"
     } // this line is telling compiler about which treat as main file inside the Jar file, the main can be external file
-
-        
+ 
         from(sourceSets.main.get().output) //main source has to be included in jar file
         dependsOn(configurations.runtimeClasspath) // and the code is depends on the confgured classpathes
         from({

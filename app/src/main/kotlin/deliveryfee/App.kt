@@ -5,7 +5,6 @@ package indexfile
 
 import io.ktor.application.*
 import io.ktor.features.ContentNegotiation
-import io.ktor.http.ContentType
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.post
@@ -13,13 +12,14 @@ import io.ktor.routing.routing
 import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.http.HttpStatusCode
+
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import java.time.ZoneOffset
-import io.ktor.http.HttpStatusCode
-import java.time.DayOfWeek
-import java.time.OffsetDateTime
 import kotlin.math.ceil
+import kotlinx.serialization.SerializationException
+
+import java.time.OffsetDateTime
 
 import CalculateTotalDeliveryFee.Deliveryfee
 
@@ -43,22 +43,29 @@ fun main() {
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })
         }
+        
 
         routing {
             post("/delivery-fee") {
                 try {
+                    // Request Data verification
                     val request = call.receive<FeeCalcRequest>()
                     if(!jsonVerificatoin(request)){
-                        call.respond(HttpStatusCode.BadRequest, "Invalid Json request")
+                        call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nNegative number is included or Timeformat is wrong\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_disttance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
                     }
+
+                    // Fee calculation
                     val feecalculation = Deliveryfee();
                     val FinalFee = feecalculation.SumDeliveryFee(request);
                     call.respond(FeecCalcResponse(FinalFee));
 
+                } catch (e: SerializationException) {                   
+                    call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nType of values are wrong or invalid key included\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_disttance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
+
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Internal Server Error\nDetails: ${e}")
+                    call.respond(HttpStatusCode.InternalServerError, "500: Internal Server Error")
                     e.printStackTrace()
-                    // println("something went wrong!")
+                    println("something went wrong!")
                 }
             }
         }
@@ -79,15 +86,11 @@ fun isValidTime(time: String): Boolean {
     return try {
                 OffsetDateTime.parse(time)
                 true
-                } catch (e: Exception) {
+            } catch (e: Exception) {
                 false
             }
 }
 
 // API testing
-// Use Class
 //Make the name more readable
-// Library versino
-// Scalability / How to change when you have to make change as Happyhour changed?
-// Library versions
-// should make routing scalability
+// Library versinon
