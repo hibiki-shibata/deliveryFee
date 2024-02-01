@@ -15,7 +15,7 @@ import java.time.OffsetDateTime
 
 class testEachFunctions {
 
-val Deliveryfee = Deliveryfee()
+    val Deliveryfee = Deliveryfee()
 
     @Test fun `calculateOrderSurcharge has to be 10€ - cartValue`() {
 
@@ -29,7 +29,7 @@ val Deliveryfee = Deliveryfee()
         assertEquals(999, one)
         assertEquals(210, small)
         assertEquals(0, just)
-        assertEquals(0, large)
+        assertEquals(0, large)   
         
     }
 
@@ -46,7 +46,6 @@ val Deliveryfee = Deliveryfee()
         assertEquals(300, just)
         assertEquals(500, large)
         assertEquals(400, large2)
-        println(large2)
     }
 
     
@@ -83,20 +82,26 @@ val Deliveryfee = Deliveryfee()
 
     }
 
-@Test fun `During the RushHours total surcharge will be multiplied by 12　devided by 10x - However, the fee still cannot be more than the max 15€`(){
-     val generalCase = Deliveryfee.calculateRushHourFee(1000)
-     val just = Deliveryfee.calculateRushHourFee(1500)
-     val larger = Deliveryfee.calculateRushHourFee(2000)
+    @Test fun `During the RushHours total surcharge will be multiplied by 12 devided by 10x - However, the fee still cannot be more than the max 15€`(){
+        val generalCase = Deliveryfee.calculateRushHourFee(1000)
+        val just = Deliveryfee.calculateRushHourFee(1500)
+        val larger = Deliveryfee.calculateRushHourFee(2000)
 
-     assertEquals(1200, generalCase)
-     assertEquals(1500, just)
-     assertEquals(1500, larger)
+        assertEquals(1200, generalCase)
+        assertEquals(1500, just)
+        assertEquals(1500, larger)
+
+    }
 
 }
 
+ //FINAL CALCULATION
+class FinalCalculation {
 
-    //Final calculation
+    val Deliveryfee = Deliveryfee()
+
     @Test fun finalCalculation() {
+
         // general
         val requestGeneral = FeeCalcRequest (
             cart_value = 790,
@@ -104,10 +109,9 @@ val Deliveryfee = Deliveryfee()
             number_of_items = 4,
             time = "2021-10-12T13:00:00Z"
         )
-
         val deliveryFee = Deliveryfee.SumDeliveryFee(requestGeneral)
-
         assertEquals(710, deliveryFee)
+
 
         //all zero
         val requestZero = FeeCalcRequest (
@@ -116,31 +120,57 @@ val Deliveryfee = Deliveryfee()
             number_of_items = 0,
             time = "2021-10-12T13:00:00Z"
         )
-        val zero = Deliveryfee.SumDeliveryFee(requestZero)
-        assertEquals(1100, zero)
+        val result1 = Deliveryfee.SumDeliveryFee(requestZero)
+        assertEquals(1100, result1)
 
 
-         // RushHour
-         val request3 = FeeCalcRequest (
-            cart_value = 0,
-            delivery_distance = 0,
-            number_of_items = 0,
-            time = "2023-11-10T17:00:00Z"
+        // At RushHour
+        val rushreq1 = FeeCalcRequest (
+            cart_value = 790,
+            delivery_distance = 2235,
+            number_of_items = 4,
+            time = "2024-02-02T17:00:00Z"
         )
-        val RushHour = Deliveryfee.SumDeliveryFee(request3)
-        // assertEquals(1200, RushHour)
-        // println(RushHour)
- 
-    }
-  
+        val RushHour = Deliveryfee.SumDeliveryFee(rushreq1)
+        assertEquals(852, RushHour)
 
+
+        // RushHour with big values
+        val bigvalue = FeeCalcRequest (
+            cart_value = 100,
+            delivery_distance = 10000,
+            number_of_items = 30,
+            time = "2024-02-02T17:00:00Z"
+        )
+        val result2 = Deliveryfee.SumDeliveryFee(bigvalue)
+        assertEquals(1500, result2)
+
+
+        // case when CartValue over 200
+        val just200 = FeeCalcRequest (
+            cart_value = 20000,
+            delivery_distance = 10000,
+            number_of_items = 30,
+            time = "2024-02-02T17:00:00Z"
+        )
+        val result3 = Deliveryfee.SumDeliveryFee(just200)
+        assertEquals(0, result3)
+
+
+        val over200 = FeeCalcRequest (
+            cart_value = 40000,
+            delivery_distance = 10000,
+            number_of_items = 30,
+            time = "2024-02-02T17:00:00Z"
+        )
+        val result4 = Deliveryfee.SumDeliveryFee(over200)
+        assertEquals(0, result4)
+                
+    }       
 
 }
 
-
-//Exeption testing(minus value, fractional number, other format request)
-// unit tests + api tests separately so you can be sure everything is tested.
-// gradle config file formatting
-
-//comment out deleting
-//re-check the edge cases
+// might be good to moduling testing file
+// API testing
+// library versino
+// ommentout add for instruction of each function
