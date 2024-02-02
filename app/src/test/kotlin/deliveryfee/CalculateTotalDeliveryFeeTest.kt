@@ -17,6 +17,8 @@ class testEachFunctionsOfDeliveryfee {
 
     @Test fun `calculateOrderSurcharge has to be 10€ - cartValue`() {
 
+
+        // calculateOrderSurcharge(cart_value)
         val zero = Deliveryfee.calculateOrderSurcharge(0)
         val one = Deliveryfee.calculateOrderSurcharge(1)
         val small = Deliveryfee.calculateOrderSurcharge(790)
@@ -33,15 +35,18 @@ class testEachFunctionsOfDeliveryfee {
 
     
     @Test fun `Distancefee always has to be above 1 euro and additional fee is charged 1 euro for next every 500m`() {
+        // calculateDistanceFee(delivery_distance)
         val zero = Deliveryfee.calculateDistanceFee(0)
+        val minimum = Deliveryfee.calculateDistanceFee(500)
         val middle = Deliveryfee.calculateDistanceFee(800)
         val just = Deliveryfee.calculateDistanceFee(1000)
         val large = Deliveryfee.calculateDistanceFee(2050)
         val large2 = Deliveryfee.calculateDistanceFee(1700) 
 
         assertEquals(100, zero)
+        assertEquals(100, minimum)
         assertEquals(200, middle)
-        assertEquals(300, just)
+        assertEquals(200, just)
         assertEquals(500, large)
         assertEquals(400, large2)
     }

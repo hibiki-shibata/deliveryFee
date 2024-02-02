@@ -1,7 +1,5 @@
 package CalculateTotalDeliveryFee
 
-// import kotlinx.serialization.json.Json
-// import java.time.ZoneOffset
 import java.time.DayOfWeek
 import java.time.OffsetDateTime
 import kotlin.math.ceil
@@ -55,7 +53,7 @@ class Deliveryfee{
 
     fun calculateDistanceFee(distance: Int): Int {
             val baseDistanceFee: Int = 100
-            val additionalDistance: Int = distance - 499
+            val additionalDistance: Int = distance - 500
             val additionalDistanceFee: Int = if (additionalDistance > 0) {
                 (ceil(additionalDistance / 500.0) * 100).toInt() 
                 //ceil -> rounding up fractional number

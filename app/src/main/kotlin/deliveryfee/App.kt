@@ -40,11 +40,11 @@ data class FeecCalcResponse(
 
 fun main() {
     embeddedServer(Netty, port = 8080) {
+
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })
         }
         
-
         routing {
             post("/delivery-fee") {
                 try {
