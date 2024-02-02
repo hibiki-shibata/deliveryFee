@@ -62,7 +62,7 @@ tasks.named<Test>("test") {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "feeee.AppKt"
+        attributes["Main-Class"] = "indexfile.AppKt"
     } // this line is telling compiler about which treat as main file inside the Jar file, the main can be external file
  
         from(sourceSets.main.get().output) //main source has to be included in jar file

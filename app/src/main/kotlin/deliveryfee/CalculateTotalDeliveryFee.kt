@@ -9,17 +9,16 @@ import indexfile.FeeCalcRequest
 
 class Deliveryfee{
 
-
-    // calculation
+    // Total calculation
     fun SumDeliveryFee(request: FeeCalcRequest): Int {
 
-            val cartValue = request.cart_value
-            val deliveryDistance = request.delivery_distance
-            val numberOfItems = request.number_of_items
-            val deliveryTime = OffsetDateTime.parse(request.time)
+            val cartValue: Int = request.cart_value
+            val deliveryDistance: Int = request.delivery_distance
+            val numberOfItems: Int = request.number_of_items
+            val deliveryTime: OffsetDateTime = OffsetDateTime.parse(request.time)
 
-            //100€ Free delivery
-            if (cartValue >= 10000) {
+            //200€ Free delivery
+            if (cartValue >= 20000) {
                 val deliveryFee:Int = 0
             return  deliveryFee
             }
@@ -41,7 +40,6 @@ class Deliveryfee{
             if(deliveryFee >= 1500){deliveryFee = 1500}
             return deliveryFee
 
-        
     }
 
 
@@ -56,28 +54,28 @@ class Deliveryfee{
 
 
     fun calculateDistanceFee(distance: Int): Int {
-            val baseDistanceFee = 100
+            val baseDistanceFee: Int = 100
             val additionalDistance: Int = distance - 499
             val additionalDistanceFee: Int = if (additionalDistance > 0) {
                 (ceil(additionalDistance / 500.0) * 100).toInt() 
                 //ceiling logic manual =>  + if (additionalDistance % 500 != 0) 100 else 0
             } else 0
-println(baseDistanceFee + additionalDistanceFee)
+
         return baseDistanceFee + additionalDistanceFee
     }
 
+    
     // If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item. 
     // An extra "bulk" fee applies for more than 12 items of 1,20€
     fun calculateItemSurcharge(numberOfItems: Int): Int {
             val baseItemSurcharge: Int = 50
             var additionalSurcharge: Int = if (numberOfItems >= 5) {
-                val extraItems:Int = numberOfItems - 4
+                val extraItems: Int = numberOfItems - 4
                 baseItemSurcharge * extraItems 
             } else 0
 
             //Bulk fee
             additionalSurcharge += if (numberOfItems > 12) 120 else 0
-
 
         return additionalSurcharge
     }
@@ -85,8 +83,8 @@ println(baseDistanceFee + additionalDistanceFee)
     
 
     fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
-            val isBetween15pmAnd19pm = deliveryTime.hour in 15..19
-            val isFriday = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
+            val isBetween15pmAnd19pm: Boolean = deliveryTime.hour in 15..19
+            val isFriday: Boolean = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
         
         return isBetween15pmAnd19pm && isFriday
 
@@ -94,8 +92,9 @@ println(baseDistanceFee + additionalDistanceFee)
 
 
     fun calculateRushHourFee(originalFee: Int): Int {
-        val updatedFee = originalFee * 12 / 10
-        val deliveryFee = if (updatedFee >= 1500) 1500 else updatedFee
+            val updatedFee: Int = originalFee * 12 / 10
+            val deliveryFee: Int = if (updatedFee >= 1500) 1500 else updatedFee
+            
         return deliveryFee
     }
 

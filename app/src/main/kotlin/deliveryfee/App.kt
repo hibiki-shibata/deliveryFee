@@ -51,16 +51,16 @@ fun main() {
                     // Request Data verification
                     val request = call.receive<FeeCalcRequest>()
                     if(!jsonVerificatoin(request)){
-                        call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nNegative number is included or Timeformat is wrong\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_disttance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
+                        call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nNegative number is included or Timeformat is wrong\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_distance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
                     }
 
                     // Fee calculation
                     val feecalculation = Deliveryfee();
-                    val FinalFee = feecalculation.SumDeliveryFee(request);
+                    val FinalFee: Int = feecalculation.SumDeliveryFee(request);
                     call.respond(FeecCalcResponse(FinalFee));
 
                 } catch (e: SerializationException) {                   
-                    call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nType of values are wrong or invalid key included\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_disttance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
+                    call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nType of values are wrong or invalid key included\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_distance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
 
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.InternalServerError, "500: Internal Server Error")
