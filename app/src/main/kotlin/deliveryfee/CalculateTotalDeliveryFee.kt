@@ -1,7 +1,7 @@
 package CalculateTotalDeliveryFee
 
-import kotlinx.serialization.json.Json
-import java.time.ZoneOffset
+// import kotlinx.serialization.json.Json
+// import java.time.ZoneOffset
 import java.time.DayOfWeek
 import java.time.OffsetDateTime
 import kotlin.math.ceil
@@ -94,7 +94,7 @@ class Deliveryfee{
     fun calculateRushHourFee(originalFee: Int): Int {
             val updatedFee: Int = originalFee * 12 / 10
             val deliveryFee: Int = if (updatedFee >= 1500) 1500 else updatedFee
-            
+
         return deliveryFee
     }
 
