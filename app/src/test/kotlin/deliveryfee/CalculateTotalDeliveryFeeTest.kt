@@ -4,16 +4,14 @@
 package CalculateTotalDeliveryFee
 
 import kotlin.test.Test
-import kotlin.test.assertNotNull
 import kotlin.test.assertEquals
 import indexfile.FeeCalcRequest
 import java.time.OffsetDateTime
 
 
-// https://github.com/woltapp/engineering-summer-intern-2023
+// https://github.com/woltapp/engineering-internship-2024
 
-
-class testEachFunctions {
+class testEachFunctionsOfDeliveryfee {
 
     val Deliveryfee = Deliveryfee()
 
@@ -68,15 +66,15 @@ class testEachFunctions {
 
 
     @Test fun `Friday 3pm - 7pm has to be considered as RushHour`(){
-        val FridayOutOfRush = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T13:00:00Z"))
+        val FridayOutOfRushTime = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T13:00:00Z"))
         val FridayRushhourEdge1 = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T15:00:00Z"))
-        val FridayRushhourMiddle = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T17:00:00Z"))
+        val FridayRushhourMiddleTime = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T17:00:00Z"))
         val FridayRushhourEdge2 = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T19:00:00Z"))
         val NotFriday = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-03T17:00:00Z"))
 
-        assertEquals(false, FridayOutOfRush)
+        assertEquals(false, FridayOutOfRushTime)
         assertEquals(true, FridayRushhourEdge1)
-        assertEquals(true, FridayRushhourMiddle)
+        assertEquals(true, FridayRushhourMiddleTime)
         assertEquals(true, FridayRushhourEdge2)
         assertEquals(false, NotFriday)
 

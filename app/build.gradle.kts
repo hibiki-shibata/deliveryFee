@@ -28,7 +28,7 @@ java {
 }
 
 
-//this line is telling compiler which file is the entry point in the sauce code
+//this line is telling compiler which file is the entry point 
 application {
     mainClass = "indexfile.AppKt"
 

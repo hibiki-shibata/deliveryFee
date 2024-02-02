@@ -28,7 +28,7 @@ class Deliveryfee{
             val itemSurcharge: Int = calculateItemSurcharge(numberOfItems)
             val bulkFee: Int = if (numberOfItems > 12) 120 else 0
 
-            var deliveryFee:Int = distanceFee + itemSurcharge + bulkFee + smallOrderSurcharge
+            var deliveryFee: Int = distanceFee + itemSurcharge + bulkFee + smallOrderSurcharge
 
             // Rush Hour check
             if (isRushHour(deliveryTime)) {
@@ -58,7 +58,7 @@ class Deliveryfee{
             val additionalDistance: Int = distance - 499
             val additionalDistanceFee: Int = if (additionalDistance > 0) {
                 (ceil(additionalDistance / 500.0) * 100).toInt() 
-                //ceiling logic manual =>  + if (additionalDistance % 500 != 0) 100 else 0
+                //ceil -> rounding up fractional number
             } else 0
 
         return baseDistanceFee + additionalDistanceFee
