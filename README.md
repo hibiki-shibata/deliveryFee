@@ -3,6 +3,9 @@
 # Calculation process:
 "/app/src/main/kotlin/deliveryfee/CalculateTotalDeliveryFee.kt"
 
+#Dependencies
+/app/build.gradle.kts
+
 # specification:
 https://github.com/woltapp/engineering-internship-2024
 
@@ -30,4 +33,4 @@ EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
-Might be good to module the main code with "Class" to make it scalable.
+*build jar file by gradle build before create docker image.
