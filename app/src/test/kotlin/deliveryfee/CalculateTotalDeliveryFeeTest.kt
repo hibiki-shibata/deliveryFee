@@ -16,8 +16,6 @@ class testEachFunctionsOfDeliveryfee {
     val Deliveryfee = Deliveryfee()
 
     @Test fun `calculateOrderSurcharge has to be 10€ - cartValue`() {
-
-
         // calculateOrderSurcharge(cart_value)
         val zero = Deliveryfee.calculateOrderSurcharge(0)
         val one = Deliveryfee.calculateOrderSurcharge(1)
@@ -102,13 +100,14 @@ class testEachFunctionsOfDeliveryfee {
 
 }
 
+
+
  //FINAL CALCULATION
 class FinalCalculation {
 
     val Deliveryfee = Deliveryfee()
 
     @Test fun finalCalculation() {
-
         // general
         val requestGeneral = FeeCalcRequest (
             cart_value = 790,

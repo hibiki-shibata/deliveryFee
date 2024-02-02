@@ -1,9 +1,7 @@
 plugins {
     
     kotlin("jvm") version "2.0.0-Beta3" // kotlin("jvm") version "1.9.20" // stable
-
     kotlin("plugin.serialization") version "1.9.20"
-
     application  // Apply the application plugin to add support for building a CLI application in Java.
 }
 
@@ -12,14 +10,15 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
-    // implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("io.ktor:ktor-server-netty:1.6.3")
     implementation("io.ktor:ktor-server-core:1.6.3")
     implementation("io.ktor:ktor-serialization:1.6.3")  
 }
+
 
 java {
     toolchain {
@@ -31,7 +30,6 @@ java {
 //this line is telling compiler which file is the entry point 
 application {
     mainClass = "indexfile.AppKt"
-
 }
 
 
@@ -55,7 +53,6 @@ tasks.jar {
         })
             // this line make sure that if there is duplicated config file in different dependencies, only one file will be included in Jar so that it won't be duplicated
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE 
-    
     
 }
 
