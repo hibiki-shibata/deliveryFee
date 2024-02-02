@@ -53,6 +53,7 @@ class testEachFunctionsOfDeliveryfee {
 
     
     @Test fun `For case the number of items more than 5, 50 cent is added for each items above and including the fifth item and Bulk fee for more than 12 items of 1€ + 20 cent `() {
+        // calculateItemSurcharge(number_of_items)
         val zero = Deliveryfee.calculateItemSurcharge(0)
         val small = Deliveryfee.calculateItemSurcharge(1)
         val just = Deliveryfee.calculateItemSurcharge(5)
@@ -86,10 +87,13 @@ class testEachFunctionsOfDeliveryfee {
     }
 
     @Test fun `During the RushHours total surcharge will be multiplied by 12 devided by 10x - However, the fee still cannot be more than the max 15€`(){
+        // calculateRushHourFee(delivery_fee_wihtout_rushHour)
+        val zero = Deliveryfee.calculateRushHourFee(0)
         val generalCase = Deliveryfee.calculateRushHourFee(1000)
         val just = Deliveryfee.calculateRushHourFee(1500)
         val larger = Deliveryfee.calculateRushHourFee(2000)
 
+        assertEquals(0, zero)
         assertEquals(1200, generalCase)
         assertEquals(1500, just)
         assertEquals(1500, larger)
