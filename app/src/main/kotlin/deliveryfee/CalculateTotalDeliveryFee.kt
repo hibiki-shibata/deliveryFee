@@ -10,62 +10,85 @@ class Deliveryfee{
 
     // Total calculation
     fun SumDeliveryFee(request: FeeCalcRequest): Int {
-
             val cartValue: Int = request.cart_value
             val deliveryDistance: Int = request.delivery_distance
             val numberOfItems: Int = request.number_of_items
             val deliveryTime: OffsetDateTime = OffsetDateTime.parse(request.time)
 
-            //200€ Free delivery
-            if (cartValue >= 20000) {
-                val deliveryFee:Int = 0
-            return  deliveryFee
-            }
+            val deliveryFeeMaxCap: Int = 1500
 
+
+            //Spec:The delivery is free (0€) when the cart value is equal or more than 200€.
+            if (cartValue >= 20000) {
+                    val deliveryFee:Int = 0
+                return  deliveryFee
+            }
+            
+            // Calculate each type of fee
             val smallOrderSurcharge: Int = calculateOrderSurcharge(cartValue)
             val distanceFee: Int = calculateDistanceFee(deliveryDistance)
             val itemSurcharge: Int = calculateItemSurcharge(numberOfItems)
-            val bulkFee: Int = if (numberOfItems > 12) 120 else 0
 
-            var deliveryFee: Int = distanceFee + itemSurcharge + bulkFee + smallOrderSurcharge
+            var deliveryFeeSubTotal: Int = smallOrderSurcharge + distanceFee + itemSurcharge
 
-            // Rush Hour check
+            //Spec: The delivery fee can never be more than 15€, including possible surcharges.
+            val deliveryFee: Int = if (deliveryFeeSubTotal >= deliveryFeeMaxCap) deliveryFeeMaxCap else deliveryFeeSubTotal
+
+
+            // Check if RushHour
             if (isRushHour(deliveryTime)) {
-                val RushdeliveryFee: Int = calculateRushHourFee(deliveryFee)
+                val RushdeliveryFee: Int = calculateRushHourFee(deliveryFee, deliveryFeeMaxCap)
                 return RushdeliveryFee
             }
             
-            // Max 15 euro
-            if(deliveryFee >= 1500){deliveryFee = 1500}
-            return deliveryFee
+            if(deliveryFee < 0 || deliveryFeeMaxCap < deliveryFee ){
+                throw Exception("Error happened in SumDeliveryFee")
+            }
+
+        return deliveryFee
 
     }
 
 
+
+    //Spec:If the cart value is less than 10€, a small order surcharge is added to the delivery price. The surcharge is the difference between the cart value and 10€.
     fun calculateOrderSurcharge(cartValue: Int): Int{
             val surcharges: Int
-            surcharges = if (cartValue < 1000) {
-                1000 - cartValue
+            val cartMinValue: Int = 1000
+            surcharges = if (cartValue < cartMinValue) {
+                cartMinValue - cartValue
             } else 0
+            
+            if(cartMinValue < surcharges || surcharges < 0){
+                throw Exception("error in calculateOrderSurcharge")
+            }
 
         return surcharges
     }
 
 
+
+    // Spec:1€ is added for every additional 500 meters. Even if the distance would be shorter than 500 meters, the minimum fee is always 1€.
     fun calculateDistanceFee(distance: Int): Int {
             val baseDistanceFee: Int = 100
-            val additionalDistance: Int = distance - 500
+            val distanceThreshold: Int = 500 //surchage will be added by each distances of this value(meter)
+            val additionalDistance: Int = distance - distanceThreshold
             val additionalDistanceFee: Int = if (additionalDistance > 0) {
-                (ceil(additionalDistance / 500.0) * 100).toInt() 
-                //ceil -> rounding up fractional number
+                (ceil(additionalDistance / distanceThreshold.toDouble()) * 100).toInt() //ceil -> rounding up fractional number
             } else 0
+            
+            val TotaldistanceFee: Int = baseDistanceFee + additionalDistanceFee
 
-        return baseDistanceFee + additionalDistanceFee
+            if(TotaldistanceFee < baseDistanceFee){
+                throw Exception("error in calculateDistanceFee")
+            }
+
+        return TotaldistanceFee
     }
 
     
-    // If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item. 
-    // An extra "bulk" fee applies for more than 12 items of 1,20€
+
+    //Spec:If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item. An extra "bulk" fee applies for more than 12 items of 1,20€.
     fun calculateItemSurcharge(numberOfItems: Int): Int {
             val baseItemSurcharge: Int = 50
             var additionalSurcharge: Int = if (numberOfItems >= 5) {
@@ -76,27 +99,33 @@ class Deliveryfee{
             //Bulk fee
             additionalSurcharge += if (numberOfItems > 12) 120 else 0
 
+            if(additionalSurcharge < 0){
+                throw Exception("errir in calculateItemSurcharge")
+            }
+
         return additionalSurcharge
     }
 
-    
 
+    
+    //Spec:During the Friday rush, 3 - 7 PM(UTC), the delivery fee (the total fee including possible surcharges) will be multiplied by 1.2x. However, the fee still cannot be more than the max (15€).
     fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
             val isBetween15pmAnd19pm: Boolean = deliveryTime.hour in 15..19
             val isFriday: Boolean = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
         
         return isBetween15pmAnd19pm && isFriday
-
     }
 
-
-    fun calculateRushHourFee(originalFee: Int): Int {
+    
+    fun calculateRushHourFee(originalFee: Int, deliveryFeeMaxCap: Int): Int {
             val updatedFee: Int = originalFee * 12 / 10
-            val deliveryFee: Int = if (updatedFee >= 1500) 1500 else updatedFee
+            val deliveryFee: Int = if (updatedFee >= deliveryFeeMaxCap) deliveryFeeMaxCap else updatedFee
+
+            if( deliveryFeeMaxCap < deliveryFee || deliveryFee < 0){
+                throw Exception("errir in calculateRushHourFee")
+            }
 
         return deliveryFee
     }
-
-
 
 }

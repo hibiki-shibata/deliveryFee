@@ -84,11 +84,13 @@ class testEachFunctionsOfDeliveryfee {
 
 
     @Test fun `During the RushHours total surcharge will be multiplied by 12 devided by 10x - However, the fee still cannot be more than the max 15€`(){
-        // calculateRushHourFee(delivery_fee_wihtout_rushHour)
-        val zero = Deliveryfee.calculateRushHourFee(0)
-        val generalCase = Deliveryfee.calculateRushHourFee(1000)
-        val just = Deliveryfee.calculateRushHourFee(1500)
-        val larger = Deliveryfee.calculateRushHourFee(2000)
+        // calculateRushHourFee(deliveryFee_wihtout_rushHour, deliveryFeeMaxCap)
+        val deliveryFeeMaxCap: Int = 1500
+        
+        val zero = Deliveryfee.calculateRushHourFee(0, deliveryFeeMaxCap)
+        val generalCase = Deliveryfee.calculateRushHourFee(1000, deliveryFeeMaxCap)
+        val just = Deliveryfee.calculateRushHourFee(1500, deliveryFeeMaxCap)
+        val larger = Deliveryfee.calculateRushHourFee(2000, deliveryFeeMaxCap)
 
         assertEquals(0, zero)
         assertEquals(1200, generalCase)
@@ -114,8 +116,8 @@ class FinalCalculation {
             number_of_items = 4,
             time = "2021-10-12T13:00:00Z"
         )
-        val deliveryFee = Deliveryfee.SumDeliveryFee(requestGeneral)
-        assertEquals(710, deliveryFee)
+        val result0 = Deliveryfee.SumDeliveryFee(requestGeneral)
+        assertEquals(710, result0)
 
 
         //all zero
@@ -137,7 +139,7 @@ class FinalCalculation {
             time = "2024-02-02T17:00:00Z"
         )
         val RushHour = Deliveryfee.SumDeliveryFee(rushreq1)
-        assertEquals(852, RushHour)
+        assertEquals(852, RushHour) 
 
 
         // RushHour with big values
@@ -175,7 +177,12 @@ class FinalCalculation {
 
 }
 
-// might be good to moduling testing file
-// API testing
-// library versino
-// ommentout add for instruction of each function
+
+
+
+// 10 euro minmimun value
+// 1 euro per 500 m, min 1 euro
+// 50 cent per numItem which above 4(=<5)
+// above 12 of numItem, bulkfee 1.20 euro
+// fee wont be more than 15 euro
+// rushHour
