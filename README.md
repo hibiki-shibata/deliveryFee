@@ -1,39 +1,34 @@
-# Entry point: 
+# File structure
+## Entry point: 
 /app/src/main/kotlin/deliveryfee/App.kt
-# Verify requested values are valid
+## Verify requested values are valid
 "/app/src/main/kotlin/deliveryfee/reqDataVerify.kt"
-# Calculation process:
+## Calculation process:
 "/app/src/main/kotlin/deliveryfee/CalculateTotalDeliveryFee.kt"
-
-
-#Dependencies
+## Dependencies
 /app/build.gradle.kts
 
 # specification:
 https://github.com/woltapp/engineering-internship-2024
 
 # Prerequisite
-gradle(8.5~) and Java(ver19~) installed.
+Gradle(8.5~) and Java(ver19~) installed.
 
 # Testing
-<sub>$ gradle test</sub>
-
-# Run test
-$ gradle run</sub>
+## Unit test 
+```bash
+$ gradle test
+```
+## API test
+```bash
+$ gradle run
+```
+Import <sup>./API_testing/postman.json</sup> into [POSTMAN](https://www.postman.com/).
+and just run the folder
 
 # Build Jar file
-<sub>$ gradle build</sub>
+```bash
+$ gradle build
+```
 
-# Dockerfile
 
-FROM openjdk:11
-
-WORKDIR /app
-
-COPY ./app/build/libs/app.jar .
-
-EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
-*build jar file by gradle build before create docker image.

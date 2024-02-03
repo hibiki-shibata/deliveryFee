@@ -1,7 +1,7 @@
 plugins {
     
     kotlin("jvm") version "2.0.0-Beta3" // kotlin("jvm") version "1.9.20" // stable
-    kotlin("plugin.serialization") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20" // stable ver is 1.9.20
     application  // Apply the application plugin to add support for building a CLI application in Java.
 }
 
@@ -13,10 +13,10 @@ repositories {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-
-    implementation("io.ktor:ktor-server-netty:1.6.3")
-    implementation("io.ktor:ktor-server-core:1.6.3")
-    implementation("io.ktor:ktor-serialization:1.6.3")  
+  
+    implementation("io.ktor:ktor-server-netty:1.6.8")
+    implementation("io.ktor:ktor-server-core:1.6.8")
+    implementation("io.ktor:ktor-serialization:1.6.8")   
 }
 
 
@@ -27,30 +27,20 @@ java {
 }
 
 
-//this line is telling compiler which file is the entry point 
+//this line is telling compiler the entry point 
 application {
     mainClass = "indexfile.AppKt"
 }
 
 
-// tasks.register<Test>("apitest") {
-//     useJUnitPlatform() 
-// }
-// tasks.named<Test>("apitest") {
-//     testLogging {
-//         showStandardStreams = true
-//     } 
-// }
-
-
 tasks.jar {
-    // this line is telling compiler about which treat as main file inside the Jar file, the main can be external file
+    // this line is telling compiler main file inside the Jar file
     manifest {
         attributes["Main-Class"] = "indexfile.AppKt"
     } 
             //main source has to be included in jar file
         from(sourceSets.main.get().output) 
-            // this code is depends on the confgured classpathes
+            // source code is depends on the confgured classpathes
         dependsOn(configurations.runtimeClasspath) 
             // this is finding jar file from the dependencies and find ziptrees which represent content of Jar file
         from({
