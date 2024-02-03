@@ -20,7 +20,7 @@
 https://github.com/woltapp/engineering-internship-2024
 
 # Prerequisite
-Gradle(8.5~) and Java(ver19~) installed.
+[Gradle](https://gradle.org/)(8.5~) and Java(ver19~) installed.
 
 # Testing
 ## Unit test: 
@@ -43,4 +43,4 @@ To run the Built jar file, you can use this command
 java -jar ~/deliveryFee/app/build/libs/app.jar
 ```
 
-
+Author: hibiki.shibata@wolt.com
