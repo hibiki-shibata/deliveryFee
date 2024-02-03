@@ -33,9 +33,14 @@ application {
 }
 
 
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
+// tasks.register<Test>("apitest") {
+//     useJUnitPlatform() 
+// }
+// tasks.named<Test>("apitest") {
+//     testLogging {
+//         showStandardStreams = true
+//     } 
+// }
 
 
 tasks.jar {
