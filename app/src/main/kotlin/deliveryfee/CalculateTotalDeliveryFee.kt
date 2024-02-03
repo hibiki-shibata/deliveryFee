@@ -31,15 +31,14 @@ class Deliveryfee{
 
             var deliveryFeeSubTotal: Int = smallOrderSurcharge + distanceFee + itemSurcharge
 
-            //Spec: The delivery fee can never be more than 15€, including possible surcharges.
-            val deliveryFee: Int = if (deliveryFeeSubTotal >= deliveryFeeMaxCap) deliveryFeeMaxCap else deliveryFeeSubTotal
-
-
             // Check if RushHour
             if (isRushHour(deliveryTime)) {
-                val RushdeliveryFee: Int = calculateRushHourFee(deliveryFee, deliveryFeeMaxCap)
+                val RushdeliveryFee: Int = calculateRushHourFee(deliveryFeeSubTotal, deliveryFeeMaxCap)
                 return RushdeliveryFee
             }
+
+            //Spec: The delivery fee can never be more than 15€, including possible surcharges.
+            val deliveryFee: Int = if (deliveryFeeSubTotal >= deliveryFeeMaxCap) deliveryFeeMaxCap else deliveryFeeSubTotal
             
             if(deliveryFee < 0 || deliveryFeeMaxCap < deliveryFee ){
                 throw Exception("Error happened in SumDeliveryFee")
