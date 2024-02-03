@@ -1,10 +1,16 @@
 # File structure
-## Entry point: 
+## Source directory
+./app/src/main/kotlin/deliveryfee/
+### Entry point: 
 /app/src/main/kotlin/deliveryfee/App.kt
-## Verify requested values are valid
+### Verify requested values are valid
 "/app/src/main/kotlin/deliveryfee/reqDataVerify.kt"
-## Calculation process:
+### Calculation process:
 "/app/src/main/kotlin/deliveryfee/CalculateTotalDeliveryFee.kt"
+
+## test directory
+./app/src/test/kotlin/deliveryfee/
+
 ## Dependencies
 /app/build.gradle.kts
 
@@ -24,7 +30,7 @@ $ gradle test
 $ gradle run
 ```
 Import <sup>./API_testing/postman.json</sup> into [POSTMAN](https://www.postman.com/).
-and just run the folder
+and run the folder
 
 # Build Jar file
 ```bash
