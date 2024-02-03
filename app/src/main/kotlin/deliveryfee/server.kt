@@ -43,21 +43,21 @@ class server {
     fun deliveryFeeServerConfig(){
         embeddedServer(Netty, port = 8080) {
             install(ContentNegotiation) {
-                json(Json { ignoreUnknownKeys = true })
+                json(Json { ignoreUnknownKeys = false })
             }
             
             routing {
                 post("/delivery-fee") {
                     try {
                         // Request Data verification
-                        val request = call.receive<FeeCalcRequest>();
-                        val reqDataVerify = reqDataVerify();
+                        val request: FeeCalcRequest = call.receive<FeeCalcRequest>();
+                        val reqDataVerify: reqDataVerify = reqDataVerify();
                         if(!reqDataVerify.jsonVerification(request)){
                             call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nNegative number is included or Timeformat is wrong\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_distance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
                         }
         
                         // Fee calculation
-                        val feecalculation = Deliveryfee();
+                        val feecalculation: Deliveryfee = Deliveryfee();
                         val FinalFee: Int = feecalculation.SumDeliveryFee(request);
         
                         //Response to Clients
