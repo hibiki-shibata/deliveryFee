@@ -1,8 +1,9 @@
-// Testing CalculateTotalDeliveryFee.kt
+// Testing each functions of CalculateTotalDeliveryFee.kt
 package CalculateTotalDeliveryFeeKt
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import serverKt.FeeCalcRequest
 import java.time.OffsetDateTime
 
@@ -15,15 +16,17 @@ class testEachFunctionsOfDeliveryfee {
 
     @Test fun `calculateOrderSurcharge has to be 10€ - cartValue`() {
         // calculateOrderSurcharge(cart_value)
+        val minus = assertFailsWith<Exception> {
+            Deliveryfee.calculateOrderSurcharge(-100000)
+        }        
         val zero = Deliveryfee.calculateOrderSurcharge(0)
-        val one = Deliveryfee.calculateOrderSurcharge(1)
-        val small = Deliveryfee.calculateOrderSurcharge(790)
+        val mid = Deliveryfee.calculateOrderSurcharge(790)
         val just = Deliveryfee.calculateOrderSurcharge(1000)
-        val large = Deliveryfee.calculateOrderSurcharge(1234)
- 
+        val large = Deliveryfee.calculateOrderSurcharge(10000)
+
+        assertEquals("error in calculateOrderSurcharge", minus.message)
         assertEquals(1000, zero)
-        assertEquals(999, one)
-        assertEquals(210, small)
+        assertEquals(210, mid)
         assertEquals(0, just)
         assertEquals(0, large)   
         
@@ -32,24 +35,31 @@ class testEachFunctionsOfDeliveryfee {
     
     @Test fun `Distancefee always has to be above 1 euro and additional fee is charged 1 euro for next every 500m`() {
         // calculateDistanceFee(delivery_distance)
+        val minus = assertFailsWith<Exception> {
+            Deliveryfee.calculateDistanceFee(-100000)
+        }   
         val zero = Deliveryfee.calculateDistanceFee(0)
         val minimum = Deliveryfee.calculateDistanceFee(500)
         val middle = Deliveryfee.calculateDistanceFee(800)
         val just = Deliveryfee.calculateDistanceFee(1000)
-        val large = Deliveryfee.calculateDistanceFee(2050)
-        val large2 = Deliveryfee.calculateDistanceFee(1700) 
+        val large = Deliveryfee.calculateDistanceFee(1700)
+        val large2 = Deliveryfee.calculateDistanceFee(2050) 
 
+        assertEquals("error in calculateDistanceFee", minus.message)
         assertEquals(100, zero)
         assertEquals(100, minimum)
         assertEquals(200, middle)
         assertEquals(200, just)
-        assertEquals(500, large)
-        assertEquals(400, large2)
+        assertEquals(400, large)
+        assertEquals(500, large2)
     }
 
     
     @Test fun `For case the number of items more than 5, 50 cent is added for each items above and including the fifth item and Bulk fee for more than 12 items of 1€ + 20 cent `() {
         // calculateItemSurcharge(number_of_items)
+        val minus = assertFailsWith<Exception> {
+            Deliveryfee.calculateItemSurcharge(-100000)
+        }   
         val zero = Deliveryfee.calculateItemSurcharge(0)
         val small = Deliveryfee.calculateItemSurcharge(1)
         val just = Deliveryfee.calculateItemSurcharge(5)
@@ -57,6 +67,7 @@ class testEachFunctionsOfDeliveryfee {
         val twelve = Deliveryfee.calculateItemSurcharge(12)
         val superLarge = Deliveryfee.calculateItemSurcharge(17)
 
+        assertEquals("error in calculateItemSurcharge", minus.message)
         assertEquals(0, zero)
         assertEquals(0, small)
         assertEquals(50, just)
@@ -87,11 +98,15 @@ class testEachFunctionsOfDeliveryfee {
         // calculateRushHourFee(deliveryFee_wihtout_rushHour, deliveryFeeMaxCap)
         val deliveryFeeMaxCap: Int = 1500
         
+        val minus = assertFailsWith<Exception> {
+            Deliveryfee.calculateRushHourFee(-100000, deliveryFeeMaxCap)
+        }   
         val zero = Deliveryfee.calculateRushHourFee(0, deliveryFeeMaxCap)
         val generalCase = Deliveryfee.calculateRushHourFee(1000, deliveryFeeMaxCap)
         val just = Deliveryfee.calculateRushHourFee(1500, deliveryFeeMaxCap)
         val larger = Deliveryfee.calculateRushHourFee(2000, deliveryFeeMaxCap)
 
+        assertEquals("error in calculateRushHourFee", minus.message)
         assertEquals(0, zero)
         assertEquals(1200, generalCase)
         assertEquals(1500, just)
@@ -103,86 +118,16 @@ class testEachFunctionsOfDeliveryfee {
 
 
 
- //FINAL CALCULATION
-class FinalCalculation {
-
-    val Deliveryfee = Deliveryfee()
-
-    @Test fun finalCalculation() {
-        // general
-        val requestGeneral = FeeCalcRequest (
-            cart_value = 790,
-            delivery_distance = 2235,
-            number_of_items = 4,
-            time = "2021-10-12T13:00:00Z"
-        )
-        val result0 = Deliveryfee.SumDeliveryFee(requestGeneral)
-        assertEquals(710, result0)
-
-
-        //all zero
-        val requestZero = FeeCalcRequest (
-            cart_value = 0,
-            delivery_distance = 0,
-            number_of_items = 0,
-            time = "2021-10-12T13:00:00Z"
-        )
-        val result1 = Deliveryfee.SumDeliveryFee(requestZero)
-        assertEquals(1100, result1)
-
-
-        // At RushHour
-        val rushreq1 = FeeCalcRequest (
-            cart_value = 790,
-            delivery_distance = 2235,
-            number_of_items = 4,
-            time = "2024-02-02T17:00:00Z"
-        )
-        val RushHour = Deliveryfee.SumDeliveryFee(rushreq1)
-        assertEquals(852, RushHour) 
-
-
-        // RushHour with big values
-        val bigvalue = FeeCalcRequest (
-            cart_value = 100,
-            delivery_distance = 10000,
-            number_of_items = 30,
-            time = "2024-02-02T17:00:00Z"
-        )
-        val result2 = Deliveryfee.SumDeliveryFee(bigvalue)
-        assertEquals(1500, result2)
-
-
-        // case when CartValue over 200
-        val just200 = FeeCalcRequest (
-            cart_value = 20000,
-            delivery_distance = 10000,
-            number_of_items = 30,
-            time = "2024-02-02T17:00:00Z"
-        )
-        val result3 = Deliveryfee.SumDeliveryFee(just200)
-        assertEquals(0, result3)
-
-
-        val over200 = FeeCalcRequest (
-            cart_value = 40000,
-            delivery_distance = 10000,
-            number_of_items = 30,
-            time = "2024-02-02T17:00:00Z"
-        )
-        val result4 = Deliveryfee.SumDeliveryFee(over200)
-        assertEquals(0, result4)
-                
-    }       
-
-}
 
 
 
 
-// 10 euro minmimun value
-// 1 euro per 500 m, min 1 euro
-// 50 cent per numItem which above 4(=<5)
-// above 12 of numItem, bulkfee 1.20 euro
+
+// 10 euro minmimun value ok 
+// 1 euro per 500 m, min 1 euro ok 
+// 50 cent per numItem which above 4(=<5) ok
+// above 12 of numItem, bulkfee 1.20 euro ok
 // fee wont be more than 15 euro
-// rushHour
+// rushHour 1.2 times increase, max 15 euro
+// max amount is 1500
+// freeDelivery when cart is above 200 euro

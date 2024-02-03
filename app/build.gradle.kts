@@ -1,5 +1,4 @@
 plugins {
-    
     kotlin("jvm") version "2.0.0-Beta3" // kotlin("jvm") version "1.9.20" is stable
     kotlin("plugin.serialization") version "1.9.20" 
     application  // Apply the application plugin to add support for building a CLI application in Java.

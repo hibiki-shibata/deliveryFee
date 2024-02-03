@@ -59,7 +59,7 @@ class Deliveryfee{
                 cartMinValue - cartValue
             } else 0
             
-            if(cartMinValue < surcharges || surcharges < 0){
+            if(cartValue < 0 || cartMinValue < surcharges || surcharges < 0){
                 throw Exception("error in calculateOrderSurcharge")
             }
 
@@ -79,7 +79,7 @@ class Deliveryfee{
             
             val TotaldistanceFee: Int = baseDistanceFee + additionalDistanceFee
 
-            if(TotaldistanceFee < baseDistanceFee){
+            if(distance < 0 || TotaldistanceFee < baseDistanceFee){
                 throw Exception("error in calculateDistanceFee")
             }
 
@@ -99,8 +99,8 @@ class Deliveryfee{
             //Bulk fee
             additionalSurcharge += if (numberOfItems > 12) 120 else 0
 
-            if(additionalSurcharge < 0){
-                throw Exception("errir in calculateItemSurcharge")
+            if(numberOfItems < 0 || additionalSurcharge < 0){
+                throw Exception("error in calculateItemSurcharge")
             }
 
         return additionalSurcharge
@@ -121,8 +121,8 @@ class Deliveryfee{
             val updatedFee: Int = originalFee * 12 / 10
             val deliveryFee: Int = if (updatedFee >= deliveryFeeMaxCap) deliveryFeeMaxCap else updatedFee
 
-            if( deliveryFeeMaxCap < deliveryFee || deliveryFee < 0){
-                throw Exception("errir in calculateRushHourFee")
+            if(originalFee < 0 || deliveryFeeMaxCap < deliveryFee || deliveryFee < 0){
+                throw Exception("error in calculateRushHourFee")
             }
 
         return deliveryFee
