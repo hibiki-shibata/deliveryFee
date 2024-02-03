@@ -1,10 +1,10 @@
 // This file calculate final delivery fee
-package CalculateTotalDeliveryFee
+package CalculateTotalDeliveryFeeKt
 
 import java.time.DayOfWeek
 import java.time.OffsetDateTime
 import kotlin.math.ceil
-import indexfile.FeeCalcRequest
+import serverKt.FeeCalcRequest
 
 class Deliveryfee{
 

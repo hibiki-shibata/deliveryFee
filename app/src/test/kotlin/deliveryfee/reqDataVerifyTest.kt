@@ -1,10 +1,10 @@
-package reqDataVerify
+package reqDataVerifyKt
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.assertFalse
-import indexfile.FeeCalcRequest
+import serverKt.FeeCalcRequest
 import java.time.OffsetDateTime
 
 class reqDataverification {

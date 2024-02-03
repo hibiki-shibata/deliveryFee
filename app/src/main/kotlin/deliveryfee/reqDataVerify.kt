@@ -1,7 +1,7 @@
 // checking if numbers are postive and if time format is in ISO format
-package reqDataVerify
+package reqDataVerifyKt
 
-import indexfile.FeeCalcRequest
+import serverKt.FeeCalcRequest
 import java.time.OffsetDateTime
 
 class reqDataVerify {

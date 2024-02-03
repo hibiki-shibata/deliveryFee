@@ -1,7 +1,7 @@
 plugins {
     
-    kotlin("jvm") version "2.0.0-Beta3" // kotlin("jvm") version "1.9.20" // stable
-    kotlin("plugin.serialization") version "1.9.20" // stable ver is 1.9.20
+    kotlin("jvm") version "2.0.0-Beta3" // kotlin("jvm") version "1.9.20" is stable
+    kotlin("plugin.serialization") version "1.9.20" 
     application  // Apply the application plugin to add support for building a CLI application in Java.
 }
 
@@ -29,14 +29,14 @@ java {
 
 //this line is telling compiler the entry point 
 application {
-    mainClass = "indexfile.AppKt"
+    mainClass = "AppKt.AppKt"
 }
 
 
 tasks.jar {
     // this line is telling compiler main file inside the Jar file
     manifest {
-        attributes["Main-Class"] = "indexfile.AppKt"
+        attributes["Main-Class"] = "AppKt.AppKt"
     } 
             //main source has to be included in jar file
         from(sourceSets.main.get().output) 
