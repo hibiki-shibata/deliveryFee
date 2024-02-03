@@ -1,7 +1,10 @@
 # Entry point: 
 /app/src/main/kotlin/deliveryfee/App.kt
+# Verify requested values are valid
+"/app/src/main/kotlin/deliveryfee/reqDataVerify.kt"
 # Calculation process:
 "/app/src/main/kotlin/deliveryfee/CalculateTotalDeliveryFee.kt"
+
 
 #Dependencies
 /app/build.gradle.kts
