@@ -53,19 +53,24 @@ class server {
                         val request: FeeCalcRequest = call.receive<FeeCalcRequest>();
                         val reqDataVerify: reqDataVerify = reqDataVerify();
                         if(!reqDataVerify.jsonVerification(request)){
-                            call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nNegative number is included or Timeformat is wrong\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_distance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
+                            throw SerializationException("keys are ok but value was minus or fractional number. otherwise time format was wrong")
                         }
         
                         // Fee calculation
-                        val feecalculation: Deliveryfee = Deliveryfee();
-                        val FinalFee: Int = feecalculation.SumDeliveryFee(request);
+                        val Deliveryfee: Deliveryfee = Deliveryfee();
+                        val FinalFee: Int = Deliveryfee.SumDeliveryFee(request);
+                          
+                        // response Int verification
+                        if (FinalFee < 0){ 
+                            throw Exception("Finalfee was Mius")
+                        }
         
                         //Response to Clients
                         call.respond(FeecCalcResponse(FinalFee));
         
                     } catch (e: SerializationException) {                   
                         call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nType of values are wrong or invalid key included\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_distance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
-        
+                        e.printStackTrace()
                     } catch (e: Exception) {
                         call.respond(HttpStatusCode.InternalServerError, "500: Internal Server Error")
                         e.printStackTrace()
