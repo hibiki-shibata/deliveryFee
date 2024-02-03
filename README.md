@@ -9,9 +9,11 @@
 ./app/src/main/kotlin/deliveryfee/reqDataVerify.kt
 ### Calculation process:
 ./app/src/main/kotlin/deliveryfee/CalculateTotalDeliveryFee.kt
-### Test directory:
+
+## Test directory:
 ./app/src/test/kotlin/deliveryfee/*
-### Dependencies:
+
+## Dependencies:
 ./app/build.gradle.kts
 
 # Specification

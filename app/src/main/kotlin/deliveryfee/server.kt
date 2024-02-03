@@ -1,3 +1,4 @@
+// configuration of ktor-netty server
 package serverKt
 
 import io.ktor.application.*
