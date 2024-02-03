@@ -38,5 +38,9 @@ and run the folder in Postman
 ```bash
 $ gradle build
 ```
+To run the Built jar file, you can use this command
+```bash
+java -jar ~/deliveryFee/app/build/libs/app.jar
+```
 
 
