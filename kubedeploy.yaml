@@ -13,6 +13,6 @@ spec:
         app: calculation
     spec:
       containers:
-        - name: feecalculation
-          image: deecalc
+        - name: feeCalculation
+          image: delFeeCalc
           imagePullPolicy: Never

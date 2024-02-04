@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "689588e8-78b9-4b38-ae2b-c94faff4d8c6",
 		"name": "API Testing for Delivery Fee",
-		"description": "This folder is for testing if the server is responding expected values/errors\n\nhttps://github.com/hibiki-shibata/deliveryFee",
+		"description": "This folder is for testing if the server is responding expected values/errors\nPlease make sure the below server code is running. You can run by \"gradle run\" \n\nhttps://github.com/hibiki-shibata/deliveryFee",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28489071"
 	},

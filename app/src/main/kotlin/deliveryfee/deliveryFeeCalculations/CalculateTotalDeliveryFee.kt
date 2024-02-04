@@ -19,10 +19,7 @@ class Deliveryfee{
 
 
             //Spec:The delivery is free (0€) when the cart value is equal or more than 200€.
-            if (cartValue >= 20000) {
-                    val deliveryFee:Int = 0
-                return  deliveryFee
-            }
+            if (cartValue >= 20000) return 0
             
             // Calculate each type of fee
             val smallOrderSurcharge: Int = calculateOrderSurcharge(cartValue)
@@ -106,15 +103,16 @@ class Deliveryfee{
     
     //Spec:During the Friday rush, 3 - 7 PM(UTC), the delivery fee (the total fee including possible surcharges) will be multiplied by 1.2x. However, the fee still cannot be more than the max (15€).
     fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
-            val isBetween15pmAnd19pm: Boolean = deliveryTime.hour in 15..19
+            val isBetween3pmAnd7pm: Boolean = deliveryTime.hour in 15..19
             val isFriday: Boolean = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
         
-        return isBetween15pmAnd19pm && isFriday
+        return isBetween3pmAnd7pm && isFriday
     }
 
     
     fun calculateRushHourFee(originalFee: Int, deliveryFeeMaxCap: Int): Int {
-            val updatedFee: Int = originalFee * 12 / 10
+            val RushHourMultiplier: Double = 1.2
+            val updatedFee: Int = (originalFee * RushHourMultiplier).toInt()
 
             val deliveryFee: Int = if (updatedFee >= deliveryFeeMaxCap) deliveryFeeMaxCap else updatedFee
 
