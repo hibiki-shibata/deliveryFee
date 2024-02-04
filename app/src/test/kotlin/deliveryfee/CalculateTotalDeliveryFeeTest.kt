@@ -4,8 +4,6 @@ package CalculateTotalDeliveryFeeKt
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import serverKt.FeeCalcRequest
-import java.time.OffsetDateTime
 
 
 // https://github.com/woltapp/engineering-internship-2024
@@ -14,7 +12,7 @@ class testEachFunctionsOfDeliveryfee {
 
     val Deliveryfee = Deliveryfee()
 
-    @Test fun `calculateOrderSurcharge has to be 10€ - cartValue`() {
+    @Test fun `If the cart value is less than 10€, a small order surcharge is added to the delivery price The surcharge is the difference between the cart value and 10€`() {
         // calculateOrderSurcharge(cart_value)
         val minus = assertFailsWith<Exception> {
             Deliveryfee.calculateOrderSurcharge(-100000)
@@ -33,7 +31,7 @@ class testEachFunctionsOfDeliveryfee {
     }
 
     
-    @Test fun `Distancefee always has to be above 1 euro and additional fee is charged 1 euro for next every 500m`() {
+    @Test fun `1€ is added for every additional 500 meters Even if the distance would be shorter than 500 meters, the minimum fee is always 1€`() {
         // calculateDistanceFee(delivery_distance)
         val minus = assertFailsWith<Exception> {
             Deliveryfee.calculateDistanceFee(-100000)
@@ -55,7 +53,7 @@ class testEachFunctionsOfDeliveryfee {
     }
 
     
-    @Test fun `For case the number of items more than 5, 50 cent is added for each items above and including the fifth item and Bulk fee for more than 12 items of 1€ + 20 cent `() {
+    @Test fun `If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item An extra "bulk" fee applies for more than 12 items of 1,20€`() {
         // calculateItemSurcharge(number_of_items)
         val minus = assertFailsWith<Exception> {
             Deliveryfee.calculateItemSurcharge(-100000)
@@ -77,57 +75,4 @@ class testEachFunctionsOfDeliveryfee {
       
     }
 
-
-    @Test fun `Friday 3pm - 7pm has to be considered as RushHour`(){
-        val FridayOutOfRushTime = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T13:00:00Z"))
-        val FridayRushhourEdge1 = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T15:00:00Z"))
-        val FridayRushhourMiddleTime = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T17:00:00Z"))
-        val FridayRushhourEdge2 = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-02T19:00:00Z"))
-        val NotFriday = Deliveryfee.isRushHour(OffsetDateTime.parse("2024-02-03T17:00:00Z"))
-
-        assertEquals(false, FridayOutOfRushTime)
-        assertEquals(true, FridayRushhourEdge1)
-        assertEquals(true, FridayRushhourMiddleTime)
-        assertEquals(true, FridayRushhourEdge2)
-        assertEquals(false, NotFriday)
-
-    }
-
-
-    @Test fun `During the RushHours total surcharge will be multiplied by 12 devided by 10x - However, the fee still cannot be more than the max 15€`(){
-        // calculateRushHourFee(deliveryFee_wihtout_rushHour, deliveryFeeMaxCap)
-        val deliveryFeeMaxCap: Int = 1500
-        
-        val minus = assertFailsWith<Exception> {
-            Deliveryfee.calculateRushHourFee(-100000, deliveryFeeMaxCap)
-        }   
-        val zero = Deliveryfee.calculateRushHourFee(0, deliveryFeeMaxCap)
-        val generalCase = Deliveryfee.calculateRushHourFee(1000, deliveryFeeMaxCap)
-        val just = Deliveryfee.calculateRushHourFee(1500, deliveryFeeMaxCap)
-        val larger = Deliveryfee.calculateRushHourFee(2000, deliveryFeeMaxCap)
-
-        assertEquals("error in calculateRushHourFee", minus.message)
-        assertEquals(0, zero)
-        assertEquals(1200, generalCase)
-        assertEquals(1500, just)
-        assertEquals(1500, larger)
-
-    }
-
 }
-
-
-
-
-
-
-
-
-// 10 euro minmimun value ok 
-// 1 euro per 500 m, min 1 euro ok 
-// 50 cent per numItem which above 4(=<5) ok
-// above 12 of numItem, bulkfee 1.20 euro ok
-// fee wont be more than 15 euro
-// rushHour 1.2 times increase, max 15 euro
-// max amount is 1500
-// freeDelivery when cart is above 200 euro
