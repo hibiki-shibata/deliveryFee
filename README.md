@@ -8,7 +8,7 @@
 ### Verify requested values are valid:
 ./app/src/main/kotlin/deliveryfee/reqDataVerify.kt
 ### Calculation process:
-./app/src/main/kotlin/deliveryfee/deliveryFeeCalculation/CalculateTotalDeliveryFee.kt
+./app/src/main/kotlin/deliveryfee/deliveryFeeCalculations/CalculateTotalDeliveryFee.kt
 
 ## Test directory:
 ./app/src/test/kotlin/deliveryfee/*
