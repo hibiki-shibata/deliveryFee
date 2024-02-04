@@ -62,8 +62,7 @@ class server {
                           
                         // response Int verification
                         if (FinalFee < 0){ 
-                            throw Exception("Finalfee was Mius")
-                        }
+                            throw Exception("Finalfee was Mius")}
         
                         //Response to Clients
                         call.respond(FeecCalcResponse(FinalFee));

@@ -39,11 +39,9 @@ class Deliveryfee{
 
             //Spec: The delivery fee can never be more than 15€, including possible surcharges.
             val deliveryFee: Int = if (deliveryFeeSubTotal >= deliveryFeeMaxCap) deliveryFeeMaxCap else deliveryFeeSubTotal
-            
-            if(deliveryFee < 0 || deliveryFeeMaxCap < deliveryFee ){
-                throw Exception("Error happened in SumDeliveryFee")
-            }
 
+
+            if(deliveryFee < 0 || deliveryFeeMaxCap < deliveryFee ) throw Exception("Error happened in SumDeliveryFee")
         return deliveryFee
 
     }
@@ -54,14 +52,13 @@ class Deliveryfee{
     fun calculateOrderSurcharge(cartValue: Int): Int{
             val surcharges: Int
             val cartMinValue: Int = 1000
+
             surcharges = if (cartValue < cartMinValue) {
                 cartMinValue - cartValue
             } else 0
             
-            if(cartValue < 0 || cartMinValue < surcharges || surcharges < 0){
-                throw Exception("error in calculateOrderSurcharge")
-            }
 
+            if(cartValue < 0 || cartMinValue < surcharges || surcharges < 0) throw Exception("error in calculateOrderSurcharge")    
         return surcharges
     }
 
@@ -78,10 +75,8 @@ class Deliveryfee{
             
             val TotaldistanceFee: Int = baseDistanceFee + additionalDistanceFee
 
-            if(distance < 0 || TotaldistanceFee < baseDistanceFee){
-                throw Exception("error in calculateDistanceFee")
-            }
 
+            if(distance < 0 || TotaldistanceFee < baseDistanceFee) throw Exception("error in calculateDistanceFee")
         return TotaldistanceFee
     }
 
@@ -90,18 +85,20 @@ class Deliveryfee{
     //Spec:If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item. An extra "bulk" fee applies for more than 12 items of 1,20€.
     fun calculateItemSurcharge(numberOfItems: Int): Int {
             val baseItemSurcharge: Int = 50
-            var additionalSurcharge: Int = if (numberOfItems >= 5) {
-                val extraItems: Int = numberOfItems - 4
+            val additionalSurchargeThreshold: Int = 5
+            val bulkFee: Int = 120
+            val bulkFeeThreshold: Int = 12
+
+            var additionalSurcharge: Int = if (numberOfItems >= additionalSurchargeThreshold) {
+                val extraItems: Int = numberOfItems - (additionalSurchargeThreshold - 1)
                 baseItemSurcharge * extraItems 
             } else 0
 
             //Bulk fee
-            additionalSurcharge += if (numberOfItems > 12) 120 else 0
+            additionalSurcharge += if (numberOfItems > bulkFeeThreshold) bulkFee else 0
 
-            if(numberOfItems < 0 || additionalSurcharge < 0){
-                throw Exception("error in calculateItemSurcharge")
-            }
 
+            if(numberOfItems < 0 || additionalSurcharge < 0) throw Exception("error in calculateItemSurcharge")
         return additionalSurcharge
     }
 
@@ -118,12 +115,11 @@ class Deliveryfee{
     
     fun calculateRushHourFee(originalFee: Int, deliveryFeeMaxCap: Int): Int {
             val updatedFee: Int = originalFee * 12 / 10
+
             val deliveryFee: Int = if (updatedFee >= deliveryFeeMaxCap) deliveryFeeMaxCap else updatedFee
 
-            if(originalFee < 0 || deliveryFeeMaxCap < deliveryFee || deliveryFee < 0){
-                throw Exception("error in calculateRushHourFee")
-            }
-
+        
+            if(originalFee < 0 || deliveryFeeMaxCap < deliveryFee || deliveryFee < 0) throw Exception("error in calculateRushHourFee")
         return deliveryFee
     }
 
