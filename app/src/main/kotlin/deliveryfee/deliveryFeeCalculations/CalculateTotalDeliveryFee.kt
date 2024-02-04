@@ -4,7 +4,9 @@ package CalculateTotalDeliveryFeeKt
 import java.time.DayOfWeek
 import java.time.OffsetDateTime
 import kotlin.math.ceil
+
 import serverKt.FeeCalcRequest
+import rushHourKt.RushHour
 
 class Deliveryfee{
 
@@ -32,8 +34,9 @@ class Deliveryfee{
             var deliveryFeeSubTotal: Int = smallOrderSurcharge + distanceFee + itemSurcharge
 
             // Check if RushHour
-            if (isRushHour(deliveryTime)) {
-                val RushdeliveryFee: Int = calculateRushHourFee(deliveryFeeSubTotal, deliveryFeeMaxCap)
+            val RushHour: RushHour = RushHour();
+            if (RushHour.isRushHour(deliveryTime)) {
+                val RushdeliveryFee: Int = RushHour.calculateRushHourFee(deliveryFeeSubTotal, deliveryFeeMaxCap)
                 return RushdeliveryFee
             }
 
@@ -103,24 +106,5 @@ class Deliveryfee{
     }
 
 
-    
-    //Spec:During the Friday rush, 3 - 7 PM(UTC), the delivery fee (the total fee including possible surcharges) will be multiplied by 1.2x. However, the fee still cannot be more than the max (15€).
-    fun isRushHour(deliveryTime: OffsetDateTime): Boolean{
-            val isBetween15pmAnd19pm: Boolean = deliveryTime.hour in 15..19
-            val isFriday: Boolean = deliveryTime.getDayOfWeek() == DayOfWeek.FRIDAY
-        
-        return isBetween15pmAnd19pm && isFriday
-    }
-
-    
-    fun calculateRushHourFee(originalFee: Int, deliveryFeeMaxCap: Int): Int {
-            val updatedFee: Int = originalFee * 12 / 10
-
-            val deliveryFee: Int = if (updatedFee >= deliveryFeeMaxCap) deliveryFeeMaxCap else updatedFee
-
-        
-            if(originalFee < 0 || deliveryFeeMaxCap < deliveryFee || deliveryFee < 0) throw Exception("error in calculateRushHourFee")
-        return deliveryFee
-    }
 
 }

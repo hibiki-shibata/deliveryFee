@@ -14,59 +14,59 @@ class FinalCalculation {
 
     val Deliveryfee = Deliveryfee()
 
-    @Test fun finalCalculation() {
+    @Test fun `Testing if the sum up calculation inside of CalculateDeliveryFee expectedly works`() {
         //all zero
-        val requestZero = FeeCalcRequest (
+        val reqZero = FeeCalcRequest (
             cart_value = 0,
             delivery_distance = 0,
             number_of_items = 0,
             time = "2021-10-12T13:00:00Z"
         )
-        val result1 = Deliveryfee.SumDeliveryFee(requestZero)
-        assertEquals(1100, result1)
+        val reqZeroResult = Deliveryfee.SumDeliveryFee(reqZero)
+        assertEquals(1100, reqZeroResult)
 
 
         // At RushHour
-        val rushreq1 = FeeCalcRequest (
+        val reqRushHour = FeeCalcRequest (
             cart_value = 790,
             delivery_distance = 2235,
             number_of_items = 4,
             time = "2024-02-02T17:00:00Z"
         )
-        val RushHour = Deliveryfee.SumDeliveryFee(rushreq1)
-        assertEquals(852, RushHour) 
+        val reqRushHourResult = Deliveryfee.SumDeliveryFee(reqRushHour)
+        assertEquals(852, reqRushHourResult) 
 
 
-        // RushHour with big values(checkCap)
-        val bigvalue = FeeCalcRequest (
+        // RushHour with big surchages(checkCap)
+        val reqBigSurchages = FeeCalcRequest (
             cart_value = 1000,
             delivery_distance = 10000,
             number_of_items = 30,
             time = "2024-02-03T17:00:00Z"
         )
-        val result2 = Deliveryfee.SumDeliveryFee(bigvalue)
-        assertEquals(1500, result2)
+        val reqBigSurchagesResult = Deliveryfee.SumDeliveryFee(reqBigSurchages)
+        assertEquals(1500, reqBigSurchagesResult)
 
 
         // case when CartValue over 200
-        val just200 = FeeCalcRequest (
+        val reqJust200euroFreeDelivery = FeeCalcRequest (
             cart_value = 20000,
             delivery_distance = 10000,
             number_of_items = 30,
             time = "2024-02-02T17:00:00Z"
         )
-        val result3 = Deliveryfee.SumDeliveryFee(just200)
-        assertEquals(0, result3)
+        val reqJust200euroFreeDeliveryResult = Deliveryfee.SumDeliveryFee(reqJust200euroFreeDelivery)
+        assertEquals(0, reqJust200euroFreeDeliveryResult)
 
 
-        val over200 = FeeCalcRequest (
+        val reqOver200euroFreeDelivery = FeeCalcRequest (
             cart_value = 40000,
             delivery_distance = 10000,
             number_of_items = 30,
             time = "2024-02-02T17:00:00Z"
         )
-        val result4 = Deliveryfee.SumDeliveryFee(over200)
-        assertEquals(0, result4)
+        val reqOver200euroFreeDeliveryResult = Deliveryfee.SumDeliveryFee(reqOver200euroFreeDelivery)
+        assertEquals(0, reqOver200euroFreeDeliveryResult)
 
 
 
