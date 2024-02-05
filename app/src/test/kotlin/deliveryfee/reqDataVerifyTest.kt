@@ -70,4 +70,18 @@ class reqDataverification {
 
     }
 
+
+    @Test fun `Check if the requested value is in the specified format`(){
+        val expectedFormat = "2024-02-03T05:35:00Z"
+        val unexpectedFormat = "2024-02-03T05:35:0000Z"
+
+     
+        val expectedFormatResult = reqDataVerify.isValidTime(expectedFormat)
+        val unexpectedFormatResult = reqDataVerify.isValidTime(unexpectedFormat)
+        
+        assertTrue(expectedFormatResult)
+        assertFalse(unexpectedFormatResult)
+
+    }
+
 }
