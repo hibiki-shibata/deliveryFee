@@ -20,7 +20,7 @@ import kotlinx.serialization.SerializationException
 import java.time.OffsetDateTime
 
 import CalculateTotalDeliveryFeeKt.Deliveryfee
-import reqDataVerifyKt.reqDataVerify
+import ReqDataVerifyKt.ReqDataVerify
 
 
 @Serializable
@@ -50,22 +50,22 @@ class server {
                 post("/delivery-fee") {
                     try {
                         // Request Data verification
-                        val request: FeeCalcRequest = call.receive<FeeCalcRequest>();
-                        val reqDataVerify: reqDataVerify = reqDataVerify();
+                        val request: FeeCalcRequest = call.receive<FeeCalcRequest>()
+                        val reqDataVerify: ReqDataVerify = ReqDataVerify()
                         if(!reqDataVerify.jsonVerification(request)){
                             throw SerializationException("keys are ok but value was minus or fractional number. otherwise time format was wrong")
                         }
         
                         // Fee calculation
-                        val Deliveryfee: Deliveryfee = Deliveryfee();
-                        val FinalFee: Int = Deliveryfee.SumDeliveryFee(request);
+                        val deliveryFee: Deliveryfee = Deliveryfee()
+                        val FinalFee: Int = deliveryFee.sumDeliveryFee(request)
                           
                         // response Int verification
                         if (FinalFee < 0){ 
                             throw Exception("Finalfee was Mius")}
         
                         //Response to Clients
-                        call.respond(FeecCalcResponse(FinalFee));
+                        call.respond(FeecCalcResponse(FinalFee))
         
                     } catch (e: SerializationException) {                   
                         call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nType of values are wrong or invalid key included\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_distance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")

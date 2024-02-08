@@ -1,5 +1,5 @@
-// testing reqDataVerify.kt
-package reqDataVerifyKt
+// testing ReqDataVerify.kt
+package ReqDataVerifyKt
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -8,9 +8,9 @@ import kotlin.test.assertFalse
 import serverKt.FeeCalcRequest
 import java.time.OffsetDateTime
 
-class reqDataverification {
+class ReqDataVerifyeqDataverification {
 
-    val reqDataVerify = reqDataVerify()
+    val reqDataVerify = ReqDataVerify()
 
     @Test  fun `Check the requested values are always postive number`(){
 

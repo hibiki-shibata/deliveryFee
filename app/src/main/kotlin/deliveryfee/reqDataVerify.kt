@@ -1,10 +1,10 @@
 // checking if numbers are postive and if time format is in ISO format
-package reqDataVerifyKt
+package ReqDataVerifyKt
 
 import serverKt.FeeCalcRequest
 import java.time.OffsetDateTime
 
-class reqDataVerify {
+class ReqDataVerify {
 
     fun jsonVerification(request: FeeCalcRequest): Boolean {
         return  request.cart_value >= 0 &&

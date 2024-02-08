@@ -9,7 +9,7 @@ import serverKt.FeeCalcRequest
 class Deliveryfee{
 
     // Total calculation
-    fun SumDeliveryFee(request: FeeCalcRequest): Int {
+    fun sumDeliveryFee(request: FeeCalcRequest): Int {
             val cartValue: Int = request.cart_value
             val deliveryDistance: Int = request.delivery_distance
             val numberOfItems: Int = request.number_of_items
@@ -30,8 +30,8 @@ class Deliveryfee{
 
             // Check if RushHour
             if (isRushHour(deliveryTime)) {
-                val RushdeliveryFee: Int = calculateRushHourFee(deliveryFeeSubTotal, deliveryFeeMaxCap)
-                return RushdeliveryFee
+                val rushDeliveryFee: Int = calculateRushHourFee(deliveryFeeSubTotal, deliveryFeeMaxCap)
+                return rushDeliveryFee
             }
 
             //Spec: The delivery fee can never be more than 15€, including possible surcharges.

@@ -12,8 +12,7 @@
  
  class FinalCalculation {
  
-     val Deliveryfee = Deliveryfee()
- 
+     val deliveryFee = Deliveryfee()
      @Test fun `Testing if the sum up of the calculations inside of CalculateDeliveryFee expectedly works`() {
          //all zero
          val reqZero = FeeCalcRequest (
@@ -22,7 +21,7 @@
              number_of_items = 0,
              time = "2021-10-12T13:00:00Z"
          )
-         val reqZeroResult = Deliveryfee.SumDeliveryFee(reqZero)
+         val reqZeroResult = deliveryFee.sumDeliveryFee(reqZero)
          assertEquals(1100, reqZeroResult)
  
  
@@ -33,7 +32,7 @@
              number_of_items = 4,
              time = "2024-02-02T17:00:00Z"
          )
-         val reqRushHourResult = Deliveryfee.SumDeliveryFee(reqRushHour)
+         val reqRushHourResult = deliveryFee.sumDeliveryFee(reqRushHour)
          assertEquals(852, reqRushHourResult) 
  
  
@@ -44,7 +43,7 @@
              number_of_items = 30,
              time = "2024-02-03T17:00:00Z"
          )
-         val reqBigSurchagesResult = Deliveryfee.SumDeliveryFee(reqBigSurchages)
+         val reqBigSurchagesResult = deliveryFee.sumDeliveryFee(reqBigSurchages)
          assertEquals(1500, reqBigSurchagesResult)
  
  
@@ -55,7 +54,7 @@
              number_of_items = 30,
              time = "2024-02-02T17:00:00Z"
          )
-         val reqJust200euroFreeDeliveryResult = Deliveryfee.SumDeliveryFee(reqJust200euroFreeDelivery)
+         val reqJust200euroFreeDeliveryResult = deliveryFee.sumDeliveryFee(reqJust200euroFreeDelivery)
          assertEquals(0, reqJust200euroFreeDeliveryResult)
  
  
@@ -65,7 +64,7 @@
              number_of_items = 30,
              time = "2024-02-02T17:00:00Z"
          )
-         val reqOver200euroFreeDeliveryResult = Deliveryfee.SumDeliveryFee(reqOver200euroFreeDelivery)
+         val reqOver200euroFreeDeliveryResult = deliveryFee.sumDeliveryFee(reqOver200euroFreeDelivery)
          assertEquals(0, reqOver200euroFreeDeliveryResult)
  
  
@@ -81,7 +80,7 @@
          time = "2024-02-02T17:00:00Z"
      )
      val cartMinusResult = assertFailsWith<Exception> {
-         Deliveryfee.SumDeliveryFee(cartMinus)
+        deliveryFee.sumDeliveryFee(cartMinus)
      }   
      assertEquals("error in calculateOrderSurcharge", cartMinusResult.message)
  
@@ -92,7 +91,7 @@
          time = "2024-02-02T17:00:00Z"
      )
      val distanceMinusResult = assertFailsWith<Exception> {
-         Deliveryfee.SumDeliveryFee(distanceMinus)
+        deliveryFee.sumDeliveryFee(distanceMinus)
      }   
      assertEquals("error in calculateDistanceFee", distanceMinusResult.message)
  
@@ -104,7 +103,7 @@
          time = "2024-02-02T17:00:00Z"
      )
      val numOfItemMinusResult = assertFailsWith<Exception> {
-         Deliveryfee.SumDeliveryFee(numOfItemMinus)
+        deliveryFee.sumDeliveryFee(numOfItemMinus)
      }   
      assertEquals("error in calculateItemSurcharge", numOfItemMinusResult.message)
  
