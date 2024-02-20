@@ -1,11 +1,11 @@
 // entry point
 package AppKt
 
-import serverKt.server
+import serverKt.Server
 
 
 fun main() {
-    val server = server()
+    val server = Server()
     server.deliveryFeeServerConfig()
 }
 

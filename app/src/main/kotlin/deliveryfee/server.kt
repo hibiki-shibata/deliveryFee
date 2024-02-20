@@ -38,9 +38,9 @@ data class FeecCalcResponse(
 )
 
 
-class server {
+class Server {
 
-    fun deliveryFeeServerConfig(){
+     fun deliveryFeeServerConfig(){
         embeddedServer(Netty, port = 8080) {
             install(ContentNegotiation) {
                 json(Json { ignoreUnknownKeys = false })
@@ -58,14 +58,14 @@ class server {
         
                         // Fee calculation
                         val deliveryFee: Deliveryfee = Deliveryfee()
-                        val FinalFee: Int = deliveryFee.sumDeliveryFee(request)
+                        val finalFee: Int = deliveryFee.sumDeliveryFee(request)
                           
                         // response Int verification
-                        if (FinalFee < 0){ 
+                        if (finalFee < 0){ 
                             throw Exception("Finalfee was Mius")}
         
                         //Response to Clients
-                        call.respond(FeecCalcResponse(FinalFee))
+                        call.respond(FeecCalcResponse(finalFee))
         
                     } catch (e: SerializationException) {                   
                         call.respond(HttpStatusCode.BadRequest, "400: Invalid request format\nType of values are wrong or invalid key included\n\nExample of expected request:\n{\"cart_value\": 10, \"delivery_distance\": 1000, \"number_of_items\": 5, \"time\": \"2024-01-01T12:00:00Z\"}")
