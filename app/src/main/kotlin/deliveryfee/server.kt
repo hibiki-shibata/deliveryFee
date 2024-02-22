@@ -19,8 +19,9 @@ import kotlinx.serialization.SerializationException
 
 import java.time.OffsetDateTime
 
-import CalculateTotalDeliveryFeeKt.Deliveryfee
+// import CalculateTotalDeliveryFeeKt.Deliveryfee
 import ReqDataVerifyKt.ReqDataVerify
+import ResDataVerifyKt.ResDataVerify
 
 
 @Serializable
@@ -51,18 +52,12 @@ class Server {
                     try {
                         // Request Data verification
                         val request: FeeCalcRequest = call.receive<FeeCalcRequest>()
-                        val reqDataVerify: ReqDataVerify = ReqDataVerify()
-                        if(!reqDataVerify.jsonVerification(request)){
-                            throw SerializationException("keys are ok but value was minus or fractional number. otherwise time format was wrong")
-                        }
+                        val reqDataVerify = ReqDataVerify()
+                        reqDataVerify.validateRequest(request)
         
                         // Fee calculation
-                        val deliveryFee: Deliveryfee = Deliveryfee()
-                        val finalFee: Int = deliveryFee.sumDeliveryFee(request)
-                          
-                        // response Int verification
-                        if (finalFee < 0){ 
-                            throw Exception("Finalfee was Mius")}
+                        val resDataVerify = ResDataVerify()
+                        val finalFee = resDataVerify.calculateDeliveryFee(request)
         
                         //Response to Clients
                         call.respond(FeecCalcResponse(finalFee))

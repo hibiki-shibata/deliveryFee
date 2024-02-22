@@ -3,8 +3,18 @@ package ReqDataVerifyKt
 
 import serverKt.FeeCalcRequest
 import java.time.OffsetDateTime
+import kotlinx.serialization.SerializationException
+
 
 class ReqDataVerify {
+
+    // Final data validation
+    fun validateRequest(request: FeeCalcRequest) {
+        if (!jsonVerification(request)) {
+            throw SerializationException("keys are ok but value was minus or fractional number. otherwise time format was wrong")
+        }
+    }
+
 
     fun jsonVerification(request: FeeCalcRequest): Boolean {
         return  request.cart_value >= 0 &&

@@ -66,48 +66,58 @@
          )
          val reqOver200euroFreeDeliveryResult = deliveryFee.sumDeliveryFee(reqOver200euroFreeDelivery)
          assertEquals(0, reqOver200euroFreeDeliveryResult)
+
+         // general
+         val generalReq = FeeCalcRequest (
+             cart_value = 790,
+             delivery_distance = 2235,
+             number_of_items = 4,
+             time = "2024-01-15T13:00:00Z"
+         )
+         val generalReqResult = deliveryFee.sumDeliveryFee(generalReq)
+         assertEquals(710, generalReqResult)
  
  
  
  
  
- //CALCULATION FAIL PATTERNS
- 
-     val cartMinus = FeeCalcRequest (
-         cart_value = -40000,
-         delivery_distance = 10000,
-         number_of_items = 30,
-         time = "2024-02-02T17:00:00Z"
-     )
-     val cartMinusResult = assertFailsWith<Exception> {
-        deliveryFee.sumDeliveryFee(cartMinus)
-     }   
-     assertEquals("error in calculateOrderSurcharge", cartMinusResult.message)
- 
-     val distanceMinus = FeeCalcRequest (
-         cart_value = 400,
-         delivery_distance = -10000,
-         number_of_items = 30,
-         time = "2024-02-02T17:00:00Z"
-     )
-     val distanceMinusResult = assertFailsWith<Exception> {
-        deliveryFee.sumDeliveryFee(distanceMinus)
-     }   
-     assertEquals("error in calculateDistanceFee", distanceMinusResult.message)
- 
- 
-     val numOfItemMinus = FeeCalcRequest (
-         cart_value = 400,
-         delivery_distance = 10000,
-         number_of_items = -30,
-         time = "2024-02-02T17:00:00Z"
-     )
-     val numOfItemMinusResult = assertFailsWith<Exception> {
-        deliveryFee.sumDeliveryFee(numOfItemMinus)
-     }   
-     assertEquals("error in calculateItemSurcharge", numOfItemMinusResult.message)
- 
-         
-     }       
+    //CALCULATION FAIL PATTERNS
+    
+        val cartMinus = FeeCalcRequest (
+            cart_value = -40000,
+            delivery_distance = 10000,
+            number_of_items = 30,
+            time = "2024-02-02T17:00:00Z"
+        )
+        val cartMinusResult = assertFailsWith<Exception> {
+            deliveryFee.sumDeliveryFee(cartMinus)
+        }   
+        assertEquals("error in calculateOrderSurcharge", cartMinusResult.message)
+    
+        val distanceMinus = FeeCalcRequest (
+            cart_value = 400,
+            delivery_distance = -10000,
+            number_of_items = 30,
+            time = "2024-02-02T17:00:00Z"
+        )
+        val distanceMinusResult = assertFailsWith<Exception> {
+            deliveryFee.sumDeliveryFee(distanceMinus)
+        }   
+        assertEquals("error in calculateDistanceFee", distanceMinusResult.message)
+    
+    
+        val numOfItemMinus = FeeCalcRequest (
+            cart_value = 400,
+            delivery_distance = 10000,
+            number_of_items = -30,
+            time = "2024-02-02T17:00:00Z"
+        )
+        val numOfItemMinusResult = assertFailsWith<Exception> {
+            deliveryFee.sumDeliveryFee(numOfItemMinus)
+        }   
+        assertEquals("error in calculateItemSurcharge", numOfItemMinusResult.message)
+    
+            
+        }       
  
  }
