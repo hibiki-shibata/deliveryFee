@@ -4,9 +4,11 @@
 #### Entry point: 
 `./app/src/main/kotlin/deliveryfee/App.kt`
 #### Server configuration: 
-`./app/src/main/kotlin/deliveryfee/server.kt`
+`./app/src/main/kotlin/deliveryfee/Server.kt`
 #### Verify requested values are valid:
-`./app/src/main/kotlin/deliveryfee/reqDataVerify.kt`
+`./app/src/main/kotlin/deliveryfee/ReqDataVerify.kt`
+#### Verify response values are valid:
+`./app/src/main/kotlin/deliveryfee/ResDataVerify.kt`
 #### Calculation process:
 `./app/src/main/kotlin/deliveryfee/deliveryFeeCalculations/CalculateTotalDeliveryFee.kt`
 
