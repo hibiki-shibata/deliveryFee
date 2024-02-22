@@ -73,6 +73,7 @@ class TestEachFunctionsOfdeliveryFee {
         assertEquals(400, twelve)
         assertEquals(770, superLarge)
       
-    }
+    } 
+
 
 }
