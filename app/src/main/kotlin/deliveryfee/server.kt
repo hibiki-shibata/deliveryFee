@@ -52,12 +52,10 @@ class Server {
                     try {
                         // Request Data verification
                         val request: FeeCalcRequest = call.receive<FeeCalcRequest>()
-                        val reqDataVerify = ReqDataVerify()
-                        reqDataVerify.validateRequest(request)
+                        ReqDataVerify().validateRequest(request)
         
                         // Fee calculation
-                        val resDataVerify = ResDataVerify()
-                        val finalFee = resDataVerify.calculateDeliveryFee(request)
+                        val finalFee = ResDataVerify().calculateDeliveryFee(request)
         
                         //Response to Clients
                         call.respond(FeecCalcResponse(finalFee))
