@@ -40,8 +40,8 @@ class TestEachFunctionsOfdeliveryFee {
         val minimum = deliveryFee.calculateDistanceFee(500)
         val middle = deliveryFee.calculateDistanceFee(800)
         val just = deliveryFee.calculateDistanceFee(1000)
-        val large = deliveryFee.calculateDistanceFee(1700)
-        val large2 = deliveryFee.calculateDistanceFee(2050) 
+        val large = deliveryFee.calculateDistanceFee(1501)
+        val large2 = deliveryFee.calculateDistanceFee(1499) 
 
         assertEquals("error in calculateDistanceFee", minus.message)
         assertEquals(100, zero)
@@ -49,7 +49,7 @@ class TestEachFunctionsOfdeliveryFee {
         assertEquals(200, middle)
         assertEquals(200, just)
         assertEquals(400, large)
-        assertEquals(500, large2)
+        assertEquals(300, large2)
     }
 
     

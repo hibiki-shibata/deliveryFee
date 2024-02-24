@@ -9,17 +9,17 @@ import serverKt.FeeCalcRequest
 class Deliveryfee{
 
     // Total calculation
-    fun sumDeliveryFee(request: FeeCalcRequest): Int {
+    fun sumDeliveryFee(request: FeeCalcRequest): Int {        
             val cartValue: Int = request.cart_value
             val deliveryDistance: Int = request.delivery_distance
             val numberOfItems: Int = request.number_of_items
             val deliveryTime: OffsetDateTime = OffsetDateTime.parse(request.time)
 
+            val cartValueForFreeDelivery: Int = 20000
             val deliveryFeeMaxCap: Int = 1500
 
-
             //Spec:The delivery is free (0€) when the cart value is equal or more than 200€.
-            if (cartValue >= 20000) return 0
+            if (cartValue >= cartValueForFreeDelivery) return 0
             
             // Calculate each type of fee
             val smallOrderSurcharge: Int = calculateOrderSurcharge(cartValue)
@@ -50,7 +50,7 @@ class Deliveryfee{
             val surcharges: Int
             val cartMinValue: Int = 1000
 
-            surcharges = if (cartValue < cartMinValue) {
+            surcharges = if (cartValue <= cartMinValue) {
                 cartMinValue - cartValue
             } else 0
             
@@ -63,17 +63,17 @@ class Deliveryfee{
 
     // Spec:1€ is added for every additional 500 meters. Even if the distance would be shorter than 500 meters, the minimum fee is always 1€.
     fun calculateDistanceFee(distance: Int): Int {
-            val baseDistanceFee: Int = 100
+            val distanceFeePer100m: Int = 100
             val distanceThreshold: Int = 500 //surchage will be added by each distances of this value(meter)
             val additionalDistance: Int = distance - distanceThreshold
             val additionalDistanceFee: Int = if (additionalDistance > 0) {
                 (ceil(additionalDistance / distanceThreshold.toDouble()) * 100).toInt() //ceil -> rounding up fractional number
             } else 0
             
-            val TotaldistanceFee: Int = baseDistanceFee + additionalDistanceFee
+            val TotaldistanceFee: Int = distanceFeePer100m + additionalDistanceFee
 
 
-            if(distance < 0 || TotaldistanceFee < baseDistanceFee) throw Exception("error in calculateDistanceFee")
+            if(distance < 0 || TotaldistanceFee < distanceFeePer100m) throw Exception("error in calculateDistanceFee")
         return TotaldistanceFee
     }
 
@@ -92,7 +92,7 @@ class Deliveryfee{
             } else 0
 
             //Bulk fee
-            additionalSurcharge += if (numberOfItems > bulkFeeThreshold) bulkFee else 0
+            additionalSurcharge += if (numberOfItems > bulkFeeThreshold) bulkFee else 0 //CONVERSATIONAL
 
 
             if(numberOfItems < 0 || additionalSurcharge < 0) throw Exception("error in calculateItemSurcharge")
@@ -112,7 +112,7 @@ class Deliveryfee{
     
     fun calculateRushHourFee(originalFee: Int, deliveryFeeMaxCap: Int): Int {
             val RushHourMultiplier: Double = 1.2
-            val updatedFee: Int = (originalFee * RushHourMultiplier).toInt()
+            val updatedFee: Int = (originalFee * RushHourMultiplier).toInt() //CONVERSATIONAL
 
             val deliveryFee: Int = if (updatedFee >= deliveryFeeMaxCap) deliveryFeeMaxCap else updatedFee
 
@@ -122,3 +122,9 @@ class Deliveryfee{
     }
 
 }
+
+
+// spec flaws
+// should I apply bulk fee when the number of item is just 12?
+// should I round up when return value of RushHours multiplies?
+// 
