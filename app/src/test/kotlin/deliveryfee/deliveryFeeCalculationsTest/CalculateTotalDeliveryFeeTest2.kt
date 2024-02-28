@@ -22,7 +22,7 @@
              time = "2021-10-12T13:00:00Z"
          )
          val reqZeroResult = deliveryFee.sumDeliveryFee(reqZero)
-         assertEquals(1100, reqZeroResult)
+         assertEquals(1200, reqZeroResult)
  
  
          // At RushHour

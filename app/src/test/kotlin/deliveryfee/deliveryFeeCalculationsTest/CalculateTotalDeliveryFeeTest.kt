@@ -44,8 +44,8 @@ class TestEachFunctionsOfdeliveryFee {
         val large2 = deliveryFee.calculateDistanceFee(1499) 
 
         assertEquals("error in calculateDistanceFee", minus.message)
-        assertEquals(100, zero)
-        assertEquals(100, minimum)
+        assertEquals(200, zero)
+        assertEquals(200, minimum)
         assertEquals(200, middle)
         assertEquals(200, just)
         assertEquals(400, large)
@@ -53,7 +53,7 @@ class TestEachFunctionsOfdeliveryFee {
     }
 
     
-    @Test fun `If the number of items is five or more, an additional 50 cent surcharge is added for each item above and including the fifth item An extra "bulk" fee applies for more than 12 items of 1,20€`() {
+    @Test fun `If the number of items is five or more  an additional 50 cent surcharge is added for each item above and including the fifth item An extra bulk fee applies for more than 12 items of 120cent`() {
         // calculateItemSurcharge(number_of_items)
         val minus = assertFailsWith<Exception> {
             deliveryFee.calculateItemSurcharge(-100000)

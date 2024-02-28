@@ -59,18 +59,19 @@ class Deliveryfee{
         return surcharges
     }
 
-
-
+// review
     // Spec:1€ is added for every additional 500 meters. Even if the distance would be shorter than 500 meters, the minimum fee is always 1€.
     fun calculateDistanceFee(distance: Int): Int {
+            val baseDistanceFee: Int = 200
+            val firstMeterThreshold: Int = 1000
+            val secondMeterThreshold: Int = 500 //surchage will be added by each distances of this value(meter)
             val distanceFeePer100m: Int = 100
-            val distanceThreshold: Int = 500 //surchage will be added by each distances of this value(meter)
-            val additionalDistance: Int = distance - distanceThreshold
+            val additionalDistance: Int = distance - firstMeterThreshold
             val additionalDistanceFee: Int = if (additionalDistance > 0) {
-                (ceil(additionalDistance / distanceThreshold.toDouble()) * 100).toInt() //ceil -> rounding up fractional number
+                (ceil(additionalDistance / secondMeterThreshold.toDouble()) * distanceFeePer100m).toInt() //ceil -> rounding up fractional number
             } else 0
             
-            val TotaldistanceFee: Int = distanceFeePer100m + additionalDistanceFee
+            val TotaldistanceFee: Int = baseDistanceFee + additionalDistanceFee
 
 
             if(distance < 0 || TotaldistanceFee < distanceFeePer100m) throw Exception("error in calculateDistanceFee")
